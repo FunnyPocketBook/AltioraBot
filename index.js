@@ -1,5 +1,5 @@
 import Discord from 'discord.js';
-import config from './config.js';
+import config from './config.json';
 import * as Poll from './components/poll.js'
 
 // Create an instance of a Discord client
@@ -16,21 +16,24 @@ client.on('ready', () => {
 
 // Create an event listener for messages
 client.on('message', message => {
-  if (message.author.bot) return;
-  if (message.content.includes(`${prefix}autoschedule`)) {
-    Poll.autoschedule(message);
+  if (!message.content.startsWith(prefix) || message.author.bot) return;
+  const wholeMessage = message.content.split('\n');
+  const args = wholeMessage.shift().slice(prefix.length).trim().split(' ');
+  // Since the command needs to be in the first line of the message, 
+  // everything that follows the second line is the actual textcontent of the message
+  const messageText = wholeMessage.join('\n');
+  const command = args?.shift().toLowerCase();
+  if (command === 'autoschedule') {
+    Poll.autoschedule(message, args, messageText);
   }
-  if (message.content.includes(`${prefix}autovote`)) {
-    Poll.autovote(message);
+  if (command === 'autovote') {
+    Poll.autovote(message, args, messageText);
   }
-  if (message.content.includes(`${prefix}autopoll`)) {
-    Poll.autopoll(message);
+  if (command === 'autopoll') {
+    Poll.autopoll(message, args, messageText);
   }
-  if (message.content.includes(`${prefix}autopoll`)) {
-    Poll.autopoll(message);
-  }
-  if (message.content.includes(`${prefix}autorolepoll`)) {
-    Poll.autorolepoll(message);
+  if (command === 'autorolepoll') {
+    Poll.autorolepoll(message, args, messageText);
   }
 });
 
