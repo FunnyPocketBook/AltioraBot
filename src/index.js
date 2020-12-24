@@ -1,5 +1,5 @@
 import Discord from 'discord.js';
-import config from './config.json';
+import config from './config.js';
 import * as Poll from './components/poll.js'
 
 // Create an instance of a Discord client
@@ -18,22 +18,22 @@ client.on('ready', () => {
 client.on('message', message => {
   if (!message.content.startsWith(prefix) || message.author.bot) return;
   const wholeMessage = message.content.split('\n');
-  const args = wholeMessage.shift().slice(prefix.length).trim().split(' ');
+  const args = wholeMessage.shift().slice(prefix.length).trim().split(/\s+/);
   // Since the command needs to be in the first line of the message, 
   // everything that follows the second line is the actual textcontent of the message
   const messageText = wholeMessage.join('\n');
-  const command = args?.shift().toLowerCase();
+  const command = args.shift().toLowerCase();
   if (command === 'autoschedule') {
-    Poll.autoschedule(message, args, messageText);
+    Poll.autoSchedule(message, args, messageText);
   }
   if (command === 'autovote') {
-    Poll.autovote(message, args, messageText);
+    Poll.autoVote(message, args, messageText);
   }
   if (command === 'autopoll') {
-    Poll.autopoll(message, args, messageText);
+    Poll.autoPoll(message, args, messageText);
   }
   if (command === 'autorolepoll') {
-    Poll.autorolepoll(message, args, messageText);
+    Poll.autoRolePoll(message, args, messageText);
   }
 });
 
