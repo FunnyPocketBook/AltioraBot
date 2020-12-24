@@ -65,11 +65,23 @@ function timer(message, args) {
 }
 
 function reminder(message, args, messageText) {
-  const pollEnd = Utils.humanTimeToSeconds(args.timer[0]);
-  const seconds = args.reminder.map(t => pollEnd - Utils.humanTimeToSeconds(t));
-  for (const reminder of seconds) {
+  let pollEnd = -1;
+  if (args.timer) {
+    pollEnd = Utils.humanTimeToSeconds(args.timer[0]);
+  }
+  for (let reminder of args.reminder) {
+    reminder = Utils.humanTimeToSeconds(reminder)
+    let text = 'the poll is closing in'
+    if (pollEnd === -1) {
+      pollEnd = reminder;
+      text = 'reminder of the poll!'
+    } else {
+      reminder = pollEnd - reminder;
+    }
     setTimeout(() => {
-      message.reply(`${args.ping ? args.ping.join(', ') : ''} the poll is closing in ${new Date((pollEnd - reminder) * 1000).toISOString().substr(11, 8)}\n> ${messageText.replace(/\n/g, '\n> ')}\n${message.url}`);
+      const timeLeft = new Date((pollEnd - reminder) * 1000).toISOString().substr(11, 8);
+      const showTimeLeft = timeLeft > (new Date(0).toISOString().substr(11, 8));
+      message.reply(`${args.ping ? args.ping.join(', ') : ''} ${text} ${showTimeLeft ? timeLeft : ''}\n> ${messageText.replace(/\n/g, '\n> ')}\n${message.url}`);
     }, reminder * 1000)
   }
 }
