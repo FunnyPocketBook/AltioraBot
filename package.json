@@ -1,7 +1,7 @@
 {
   "type": "module",
   "dependencies": {
-    "discord.js": "^12.5.1"
+    "discord.js": "github:discordjs/discord.js"
   },
   "name": "altiorabot",
   "description": "A Discord bot for the Overwatch community Altiora.",
