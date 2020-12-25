@@ -1,10 +1,12 @@
-export function humanTimeToSeconds(time) {
+import * as Interfaces from '../types/poll.interface';
+
+export function humanTimeToSeconds(time: string): number {
   let seconds = 0;
   const splitTime = time.match(/\d+[hms]/g);
   if (splitTime === null) return -1;
   for (const t of splitTime) {
     const type = t.slice(-1);
-    const number = t.slice(0, -1);
+    const number = parseInt(t.slice(0, -1));
     switch (type) {
       case "h":
         seconds += number * 60 * 60;
@@ -13,15 +15,15 @@ export function humanTimeToSeconds(time) {
         seconds += number * 60;
         break;
       case "s":
-        seconds += parseInt(number);
+        seconds += number;
         break;
     }
   }
   return seconds;
 }
 
-export function argumentParser(args) {
-  const sortedArguments = {};
+export function argumentParser(args: string[]) {
+  const sortedArguments: Interfaces.Arguments = {};
   let option = '';
   for (const arg of args) {
     if (arg.startsWith('-')) {

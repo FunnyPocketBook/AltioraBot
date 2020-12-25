@@ -1,15 +1,12 @@
-import Discord from 'discord.js';
+import * as Discord from 'discord.js';
 import config from './config.js';
 import * as Poll from './components/poll.js'
+import * as Util from './util/util.js';
 
 // Create an instance of a Discord client
 const client = new Discord.Client();
 const prefix = '^';
 
-/**
- * The ready event is vital, it means that only _after_ this will your bot start reacting to information
- * received from Discord
- */
 client.on('ready', () => {
   console.log('I am ready!');
 });
@@ -18,22 +15,22 @@ client.on('ready', () => {
 client.on('message', message => {
   if (!message.content.startsWith(prefix) || message.author.bot) return;
   const wholeMessage = message.content.split('\n');
-  const args = wholeMessage.shift().slice(prefix.length).trim().split(/\s+/);
+  const options = wholeMessage[0].slice(prefix.length).trim().split(/\s+/);
   // Since the command needs to be in the first line of the message, 
   // everything that follows the second line is the actual textcontent of the message
-  const messageText = wholeMessage.join('\n');
-  const command = args.shift().toLowerCase();
+  const command = options.shift().toLowerCase();
+  const args = Util.argumentParser(options);
   if (command === 'autoschedule') {
-    Poll.autoSchedule(message, args, messageText);
+    Poll.autoSchedule(message, args);
   }
   if (command === 'autovote') {
-    Poll.autoVote(message, args, messageText);
+    Poll.autoVote(message, args);
   }
   if (command === 'autopoll') {
-    Poll.autoPoll(message, args, messageText);
+    Poll.autoPoll(message, args);
   }
   if (command === 'autorolepoll') {
-    Poll.autoRolePoll(message, args, messageText);
+    Poll.autoRolePoll(message, args);
   }
 });
 
