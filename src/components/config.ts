@@ -16,6 +16,6 @@ export function setConfig(options: string[]): Config {
 }
 
 export function loadConfig(): Config {
-  const rawdata = fs.readFileSync("config.json");
+  const rawdata = fs.readFileSync("appdata/config.json");
   return JSON.parse(rawdata.toString());
 }
