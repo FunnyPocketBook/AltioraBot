@@ -11,7 +11,7 @@ export function setConfig(options: string[]): Config {
   for (let i = 0; i < options.length; i++) {
     config.options[options[i]] = options[++i];
   }
-  fs.writeFileSync("config.json", JSON.stringify(config, null, 2));
+  fs.writeFileSync("appdata/config.json", JSON.stringify(config, null, 2));
   return config;
 }
 
