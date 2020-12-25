@@ -1,0 +1,8 @@
+{
+  "botToken": "token",
+  "options": {
+    "introductionChannelId": "id",
+    "communityRoleId": "id",
+    "minIntroWords": 5
+  }
+}

@@ -5,6 +5,7 @@
     "sourceMap": true,
     "outDir": "out",
     "moduleResolution": "node",
-    "downlevelIteration": true
+    "downlevelIteration": true,
+    "resolveJsonModule": true
   }
 }

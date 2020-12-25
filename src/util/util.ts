@@ -1,5 +1,4 @@
-import * as Interfaces from "../types/poll.interface";
-import * as Discord from "discord.js";
+import * as Interfaces from "../types/interface";
 
 export function humanTimeToSeconds(time: string): number {
   let seconds = 0;
@@ -23,7 +22,7 @@ export function humanTimeToSeconds(time: string): number {
   return seconds;
 }
 
-export function argumentParser(args: string[]) {
+export function argumentParser(args: string[]): Interfaces.Arguments {
   const sortedArguments: Interfaces.Arguments = {};
   let option = "";
   for (const arg of args) {
