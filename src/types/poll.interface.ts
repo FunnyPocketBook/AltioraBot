@@ -1,5 +1,5 @@
 export interface Arguments {
-  timer?: string[],
-  reminder?: string[],
-  ping?: string[]
+  timer?: string[];
+  reminder?: string[];
+  ping?: string[];
 }

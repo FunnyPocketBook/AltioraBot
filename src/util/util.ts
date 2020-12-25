@@ -1,5 +1,5 @@
-import * as Interfaces from '../types/poll.interface';
-import * as Discord from 'discord.js';
+import * as Interfaces from "../types/poll.interface";
+import * as Discord from "discord.js";
 
 export function humanTimeToSeconds(time: string): number {
   let seconds = 0;
@@ -25,14 +25,14 @@ export function humanTimeToSeconds(time: string): number {
 
 export function argumentParser(args: string[]) {
   const sortedArguments: Interfaces.Arguments = {};
-  let option = '';
+  let option = "";
   for (const arg of args) {
-    if (arg.startsWith('-')) {
+    if (arg.startsWith("-")) {
       option = arg.slice(1);
       sortedArguments[option] = [];
       continue;
     }
-    if (option !== '') {
+    if (option !== "") {
       sortedArguments[option].push(arg);
     }
   }
