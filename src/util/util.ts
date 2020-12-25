@@ -1,4 +1,5 @@
 import * as Interfaces from '../types/poll.interface';
+import * as Discord from 'discord.js';
 
 export function humanTimeToSeconds(time: string): number {
   let seconds = 0;
@@ -36,4 +37,11 @@ export function argumentParser(args: string[]) {
     }
   }
   return sortedArguments;
+}
+
+// options: { max: 4, time: 60000, errors: ['time'] }
+export async function reactionHandler(message: Discord.Message, filter: Discord.CollectorFilter, options?: Discord.AwaitReactionsOptions) {
+  const reactions = await message.awaitReactions(filter, options);
+  console.log(reactions.size);
+  console.log(`After a minute, only ${reactions.size} out of 4 reacted.`);;
 }

@@ -31,7 +31,6 @@ export async function autoVote(message: Discord.Message, args: Arguments) {
 }
 
 export async function autoPoll(message: Discord.Message, args: Arguments) {
-  // ^autopoll -timer 1h -reminder 45m 5m -ping @role1 @role2
   await message.react(Emojis.AGREE);
   await message.react(Emojis.DISAGREE);
   message.react(Emojis.QUESTIONMARK);
@@ -50,6 +49,12 @@ export async function autoRolePoll(message: Discord.Message, args: Arguments) {
   await message.react(Emojis.PROJECTILE);
   await message.react(Emojis.FLEXSUPPORT);
   message.react(Emojis.MAINSUPPORT);
+  if (args.timer) {
+    timer(message, args);
+  }
+  if (args.reminder) {
+    reminder(message, args);
+  }
 }
 
 function timer(message: Discord.Message, args: Arguments) {
@@ -57,7 +62,7 @@ function timer(message: Discord.Message, args: Arguments) {
   setTimeout(async function() {
     let max = 0;
     const maxReaction = [];
-    message = await message.fetch();
+    //message = await message.fetch();
     // Get maximum reaction count
     for (const reaction of message.reactions.cache) {
       const count = reaction[1].count;
@@ -87,7 +92,6 @@ function timer(message: Discord.Message, args: Arguments) {
 function reminder(message: Discord.Message, args: Arguments) {
   let pollEnd = -1;
   let pollEndSeconds = -1;
-  let tempTime = pollEnd;
   if (args.timer) {
     pollEndSeconds = Util.humanTimeToSeconds(args.timer[0]);
     console.log(`Vote ends in ${pollEndSeconds} seconds.`);
