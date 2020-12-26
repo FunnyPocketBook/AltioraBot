@@ -86,6 +86,18 @@ More text here
 :flower: Description of reaction
 ```
 
+Developer note:
+Every line that start as an emoji is seen as custom reaction
+```
+^autovote -custom
+:Altiora: Altiora more text
+:cucumber: oneword
+:kirby_popcorn:  
+asdf asdflk
+:ghost_hug:
+aw3fd
+```
+
 `-message` lets the user specify a custom text for the majority reaction text. It takes a string wrapped in double quotes as an input (`"this will be the custom message"`). The use can also use `^r` in the message itself to use the majority reaction in the message itself. If `-custom` is also given as option, `^r` will use the descriptor of the majority emoji instead of the emoji itself.
 ```
 ^autoschedule -message "Scrim on ^r at 20 CET!"
