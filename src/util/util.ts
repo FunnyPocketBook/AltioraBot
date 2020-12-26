@@ -56,7 +56,7 @@ function getEmojiAndDescription(message: Message): Map<string, string> {
   const text = message.content.split("\n");
   const reactions = new Map();
   for (const line of text) {
-    if (!line.startsWith("<:")) continue;
+    if (!line.startsWith("<:") && line.substring(0, 2).charCodeAt(0) < 161) continue;
     const emoji = line.substr(0, line.indexOf(" "));
     const description = line.substr(line.indexOf(" ") + 1);
     reactions.set(emoji, description);
