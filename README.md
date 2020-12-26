@@ -1,7 +1,7 @@
 # AltioraBot
 
 ## Polls
-All commands have to start with a caret `^` and have to be in the first line of the message. Any text that the user wants to add has to be in another line.
+All commands have to start with a tiny mountain (caret) `^` and have to be in the first line of the message. Any text that the user wants to add has to be in another line.
 
 ```
 ^autopoll -timer 10m -reminder 2m 30s -ping @role @mention
