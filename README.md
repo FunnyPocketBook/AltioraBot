@@ -2,6 +2,8 @@
 
 DockerHub: https://hub.docker.com/r/funnypocketbook/altiora_bot
 
+There is currently no error checking so stuff might break. If you encounter a bug, please contact operations staff or me directly.
+
 ## Bot
 
 ### Commands
@@ -77,6 +79,9 @@ The specified times are always a number followed by `h`, `m` or `s` for hour, mi
 `-custom` lets the user set custom emojis as reaction. This will override any of the above commands, so it doesn't matter which command you use. The custom reaction should be provided at the end of the message, each custom reaction is on its own line and *seperated by a space* from its descriptor. If `-timer` is also given as option, the corresponding emojis of the tie or majority will be replaced with the descriptor of the emoji.
 ```
 ^autovote -custom
+Some text here
+
+More text here
 :Altiora: Description of reaction
 :flower: Description of reaction
 ```
