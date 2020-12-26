@@ -1,5 +1,7 @@
 # AltioraBot
 
+DockerHub: https://hub.docker.com/r/funnypocketbook/altiora_bot
+
 ## Polls
 All commands have to start with a tiny mountain (caret) `^` and have to be in the first line of the message. Any text that the user wants to add should be in another line. I don't know what happens when it's in the same line - should still work but it might break some stuff as well.
 
