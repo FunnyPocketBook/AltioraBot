@@ -21,6 +21,7 @@ export function loadConfig(): Config {
     const rawData = fs.readFileSync("appdata/config.json");
     config = JSON.parse(rawData.toString());
   } catch (e) {
+    fs.writeFileSync("appdata/config.json", "{}");
     config = {};
   }
   return config;
