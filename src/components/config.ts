@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import { Config } from "../types/interface.js";
 
-export function getConfig(): string {
+export function getConfigurableConfig(): string {
   const config = loadConfig();
   return JSON.stringify(config.options, null, 2);
 }
@@ -16,6 +16,12 @@ export function setConfig(options: string[]): Config {
 }
 
 export function loadConfig(): Config {
-  const rawdata = fs.readFileSync("appdata/config.json");
-  return JSON.parse(rawdata.toString());
+  let config;
+  try {
+    const rawData = fs.readFileSync("appdata/config.json");
+    config = JSON.parse(rawData.toString());
+  } catch (e) {
+    config = {};
+  }
+  return config;
 }

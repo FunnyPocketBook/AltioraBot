@@ -1,9 +1,39 @@
 import * as Emojis from "../util/emojis.js";
 import * as Util from "../util/util.js";
-import * as Discord from "discord.js";
+import { Message, MessageReaction, User } from "discord.js";
+import * as Config from "./config.js";
 import { Arguments } from "../types/interface.js";
 
-export async function autoSchedule(message: Discord.Message, args: Arguments): Promise<void> {
+export async function vote(message: Message, command: string, args: Arguments): Promise<void> {
+  if (!args.custom) {
+    switch (command) {
+      case "autorole":
+        autoRolePoll(message);
+        break;
+      case "autopoll":
+        autoPoll(message);
+        break;
+      case "autovote":
+        autoVote(message);
+        break;
+      case "autoschedule":
+        autoSchedule(message);
+        break;
+    }
+  } else {
+    for (const emoji of args.custom.keys()) {
+      await message.react(emoji);
+    }
+  }
+  if (args.timer) {
+    timer(message, args);
+  }
+  if (args.reminder) {
+    reminder(message, args);
+  }
+}
+
+export async function autoSchedule(message: Message): Promise<void> {
   await message.react(Emojis.MONDAY);
   await message.react(Emojis.TUESDAY);
   await message.react(Emojis.WEDNESDAY);
@@ -11,63 +41,41 @@ export async function autoSchedule(message: Discord.Message, args: Arguments): P
   await message.react(Emojis.FRIDAY);
   await message.react(Emojis.SATURDAY);
   message.react(Emojis.SUNDAY);
-  if (args.timer) {
-    timer(message, args);
-  }
-  if (args.reminder) {
-    reminder(message, args);
-  }
 }
 
-export async function autoVote(message: Discord.Message, args: Arguments): Promise<void> {
+export async function autoVote(message: Message): Promise<void> {
   await message.react(Emojis.UPVOTE);
   message.react(Emojis.DOWNVOTE);
-  if (args.timer) {
-    timer(message, args);
-  }
-  if (args.reminder) {
-    reminder(message, args);
-  }
 }
 
-export async function autoPoll(message: Discord.Message, args: Arguments): Promise<void> {
+export async function autoPoll(message: Message): Promise<void> {
+  // if (!args.custom) {
   await message.react(Emojis.AGREE);
   await message.react(Emojis.DISAGREE);
   message.react(Emojis.QUESTIONMARK);
-  if (args.timer) {
-    timer(message, args);
-  }
-  if (args.reminder) {
-    reminder(message, args);
-  }
 }
 
-export async function autoRolePoll(message: Discord.Message, args: Arguments): Promise<void> {
+export async function autoRolePoll(message: Message): Promise<void> {
   await message.react(Emojis.MAINTANK);
   await message.react(Emojis.OFFTANK);
   await message.react(Emojis.HITSCAN);
   await message.react(Emojis.PROJECTILE);
   await message.react(Emojis.FLEXSUPPORT);
   message.react(Emojis.MAINSUPPORT);
-  if (args.timer) {
-    timer(message, args);
-  }
-  if (args.reminder) {
-    reminder(message, args);
-  }
 }
 
-async function timer(message: Discord.Message, args: Arguments): Promise<void> {
+async function timer(message: Message, args: Arguments): Promise<void> {
   const seconds = Util.humanTimeToSeconds(args.timer[0]);
-  const filter = (reaction: Discord.MessageReaction, user: Discord.User) => !user.bot;
+  const filter = (_reaction: MessageReaction, user: User) => !user.bot; // Only get the reactions that aren't by bots
   const options = {
     time: seconds * 1000
   };
+  console.log(`${message.id}: [Poll] Wait for ${seconds} to end the poll.\n${message.content}`);
   const reactions = await message.awaitReactions(filter, options);
-
+  const config = Config.loadConfig();
   let max = 0;
-  const allReactions = {};
-  const maxReaction = [];
+  const allReactions = {}; // Stores which user reacted with which emoji - maybe make it a map? TBD
+  let maxReaction = [];
   // Get maximum reaction count
   for (const reaction of reactions) {
     const count = reaction[1].count;
@@ -82,16 +90,31 @@ async function timer(message: Discord.Message, args: Arguments): Promise<void> {
   for (const reaction of reactions) {
     if (max === reaction[1].count) maxReaction.push(reaction[1].emoji);
   }
+  // If custom options are given, convert the emojis to the corresponding option
+  if (args.custom) {
+    maxReaction = maxReaction.map((r) => {
+      const option = args.custom.get(r.toString());
+      if (option === undefined) return r;
+      else return option;
+    });
+  }
+  // Bot reactions don't count
   if (maxReaction.length === 0) {
-    message.reply(`${args.ping ? args.ping.join(", ") : ""} No one reacted :(`);
+    // No reactions
+    console.log(`${message.id}: [Poll] No reactions`);
+    message.reply(`${args.ping ? args.ping.join(", ") : ""} ${config.options.noReactionText}`);
   } else if (maxReaction.length > 1) {
-    message.reply(
-      `${args.ping ? args.ping.join(", ") : ""} The voting has closed and there was a tie between: ${maxReaction.join(
-        ", "
-      )}`
-    );
+    // Tie between multiple choices
+    console.log(`${message.id}: [Poll] Tie between ${maxReaction.join(", ")}`);
+    message.reply(`${args.ping ? args.ping.join(", ") : ""} ${config.options.tieText}: ${maxReaction.join(", ")}`);
   } else {
-    message.reply(`${args.ping ? args.ping.join(", ") : ""} The voting has closed, the winner is: ${maxReaction}`);
+    if (args.message) {
+      // Custom message provided
+      console.log(`${message.id}: [Poll] Custom message provided: ${args.message}`);
+      message.reply(`${args.ping ? args.ping.join(", ") : ""} ${args.message.replace(/\^r/g, maxReaction.join(", "))}`);
+    } else {
+      message.reply(`${args.ping ? args.ping.join(", ") : ""} ${config.options.winnerText}: ${maxReaction}`);
+    }
   }
 }
 
@@ -100,28 +123,31 @@ async function timer(message: Discord.Message, args: Arguments): Promise<void> {
  * @param message Discord message to reply to
  * @param args Arguments for the reminder times and to determine whether or not to ping anyone
  */
-function reminder(message: Discord.Message, args: Arguments): void {
+function reminder(message: Message, args: Arguments): void {
   let pollEndSeconds = -1;
+  // Poll has an end
   if (args.timer) {
     pollEndSeconds = Util.humanTimeToSeconds(args.timer[0]);
-    console.log(`Vote ends in ${pollEndSeconds} seconds.`);
+    console.log(`${message.id}: [Poll] Vote ends in ${new Date(pollEndSeconds * 1000).toISOString().substr(11, 8)}\n${message.content}`);
   }
   for (const reminder of args.reminder) {
     const reminderSeconds = Util.humanTimeToSeconds(reminder);
     let timeoutSeconds = 0;
     let text = "";
+    // If the poll has an end, say how much time is left. Otherwise simple reminder
     if (pollEndSeconds === -1) {
-      console.log("No timer set.");
       text = "Reminder of the vote!";
       timeoutSeconds = reminderSeconds;
     } else {
-      console.log("Timer set");
       text = `The vote is closing in ${new Date(reminderSeconds * 1000).toISOString().substr(11, 8)}`;
       timeoutSeconds = pollEndSeconds - reminderSeconds;
     }
+    // For each setTimeout create a self invoking function to store the intermediate variable values.
+    // Otherwise the values of the last iteration will be used for each setTimeout
     setTimeout(
       (function (text, ping) {
         return function () {
+          console.log(`${message.id}: [Poll] Sending reminder`);
           message.reply(`${ping ? ping.join(", ") : ""} ${text}`);
         };
       })(text, args.ping),

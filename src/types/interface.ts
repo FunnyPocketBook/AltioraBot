@@ -4,6 +4,8 @@ export interface Arguments {
   ping?: string[];
   list?: string[];
   set?: string[];
+  custom?: Map<string, string>;
+  message?: string;
 }
 
 export interface Config {
@@ -12,5 +14,8 @@ export interface Config {
     introductionChannelId: string;
     communityRoleId: string;
     minIntroWords: number;
+    noReactionText: string;
+    tieText: string;
+    winnerText: string;
   };
 }
