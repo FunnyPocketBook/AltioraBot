@@ -3,7 +3,7 @@ export interface Arguments {
   reminder?: string[];
   ping?: string[];
   list?: string[];
-  set?: string[];
+  set?: Map<string, string>;
   custom?: Map<string, string>;
   message?: string;
 }

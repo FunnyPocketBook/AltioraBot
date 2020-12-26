@@ -2,6 +2,29 @@
 
 DockerHub: https://hub.docker.com/r/funnypocketbook/altiora_bot
 
+## Bot
+
+### Commands
+
+`^config -list` will show anyone with the permission "Manage Server" the current configuration of the bot.
+
+```JSON
+{
+  "introductionChannelId": "id",
+  "communityRoleId": "id",
+  "minIntroWords": 10,
+  "noReactionText": "No one reacted :(",
+  "tieText": "The voting has been closed and there was a tie between",
+  "winnerText": "The voting has been closed, the winner is"
+}
+```
+
+`^config -set key value` will let anyone with the permission "Manage Server" modify the configuration of the bot.
+```
+^config -set noReactionText "updated text" minIntroWords 5 winnerText "you can also change multiple keys at once like this"
+```
+
+
 ## Polls
 All commands have to start with a tiny mountain (caret) `^` and have to be in the first line of the message. Any text that the user wants to add should be in another line. I don't know what happens when it's in the same line - should still work but it might break some stuff as well.
 

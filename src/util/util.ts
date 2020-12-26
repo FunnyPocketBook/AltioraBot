@@ -35,6 +35,13 @@ export function argumentParser(args: string[], message?: Message): Interfaces.Ar
       else if (option === "message") {
         const customMessage = args[++i];
         sortedArguments[option] = customMessage.substring(1, customMessage.length - 1);
+      } else if (option === "set") {
+        sortedArguments.set = new Map();
+        do {
+          const key = args[++i];
+          const value = args[++i];
+          sortedArguments.set.set(key, value.substring(1, value.length - 1));
+        } while (i + 1 < args.length && !args[i + 1].startsWith("-"));
       } else sortedArguments[option] = [];
       continue;
     } else if (option !== "") sortedArguments[option].push(arg);
