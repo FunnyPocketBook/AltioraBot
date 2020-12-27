@@ -46,7 +46,7 @@ client.on("message", (message) => {
   if (
     message.channel.id === config.options.introductionChannelId &&
     !message.author.bot &&
-    message.content.split(" ").length > config.options.minIntroWords
+    message.content.split(" ").length >= config.options.minIntroWords
   ) {
     Util.addRoleIfNotExists(
       message,
@@ -57,3 +57,8 @@ client.on("message", (message) => {
 });
 
 client.login(config.botToken);
+
+process.on("unhandledRejection", (error: Error, p) => {
+  console.log("=== UNHANDLED REJECTION ===");
+  console.dir(error.stack);
+});

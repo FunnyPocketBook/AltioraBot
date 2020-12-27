@@ -2,9 +2,10 @@ import * as Interfaces from "../types/interface";
 import { Message } from "discord.js";
 
 export function humanTimeToSeconds(time: string): number {
+  if (!time) return -1;
   let seconds = 0;
   const splitTime = time.match(/\d+[hms]/g);
-  if (splitTime === null) return -1;
+  if (splitTime === null) return -2;
   for (const t of splitTime) {
     const type = t.slice(-1);
     const number = parseInt(t.slice(0, -1));
@@ -64,8 +65,10 @@ function getEmojiAndDescription(message: Message): Map<string, string> {
   const reactions = new Map();
   for (const line of text) {
     if (!line.startsWith("<:") && line.substring(0, 2).charCodeAt(0) < 161) continue;
-    const emoji = line.substr(0, line.indexOf(" "));
-    const description = line.substr(line.indexOf(" ") + 1);
+    let emoji = line.substr(0, line.indexOf(" "));
+    let description = line.substr(line.indexOf(" ") + 1);
+    emoji = emoji.trim() === "" ? description : emoji;
+    description = description.trim() === "" ? emoji : description;
     reactions.set(emoji, description);
   }
   return reactions;
