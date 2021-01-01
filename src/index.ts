@@ -23,7 +23,8 @@ client.on("message", (message) => {
       .match(/"(?:\\"|[^"])+"|(\S)+/g); // Splits string by non-whitespace but keeps text in quotes together
     // Since the command needs to be in the first line of the message,
     // everything that follows the second line is the actual textcontent of the message
-    const command = options.shift().toLowerCase();
+    const command = options?.shift().toLowerCase();
+    if (!command) return;
     const args = Util.argumentParser(options, message);
     if (command.startsWith("auto")) {
       Poll.vote(message, command, args);
