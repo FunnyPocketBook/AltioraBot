@@ -42,7 +42,10 @@ client.on("message", (message) => {
         }
       }
     }
-  }
+  } else if (message.content.includes("autorole")) Poll.autoRolePoll(message);
+  else if (message.content.includes("autopoll")) Poll.autoPoll(message);
+  else if (message.content.includes("autovote")) Poll.autoVote(message);
+  else if (message.content.includes("autoschedule")) Poll.autoSchedule(message);
   // Check introductory channel for messages and give community role to member if they have written an intro longer than 5 words
   if (
     message.channel.id === config.options.introductionChannelId &&

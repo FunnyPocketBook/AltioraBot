@@ -2,6 +2,7 @@
   "type": "module",
   "dependencies": {
     "discord.js": "github:discordjs/discord.js",
+    "emoji-regex": "^9.2.0",
     "fs": "0.0.1-security"
   },
   "name": "altiorabot",

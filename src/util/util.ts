@@ -1,5 +1,6 @@
 import * as Interfaces from "../types/interface";
 import { Message } from "discord.js";
+import EmojiRegex from "emoji-regex/RGI_Emoji.js";
 
 export function humanTimeToSeconds(time: string): number {
   if (!time) return -1;
@@ -59,13 +60,14 @@ export function addRoleIfNotExists(message: Message, roleId: string, reason?: st
   }
 }
 
-// The emoji and its description are in the form "<:emojiname:emojiID> description of this emoji/option"
 function getEmojiAndDescription(message: Message): Map<string, string> {
   const text = message.content.split("\n");
   const reactions = new Map();
   for (const line of text) {
-    if (!line.startsWith("<:") && line.substring(0, 2).charCodeAt(0) < 161) continue;
-    let emoji = line.substr(0, line.indexOf(" "));
+    const matchUnicodeEmoji = line.match(EmojiRegex());
+    const matchDiscordEmoji = line.match(/<a?:.+:\d+>/);
+    if (matchDiscordEmoji === null && matchUnicodeEmoji === null) continue;
+    let emoji = matchDiscordEmoji ? matchDiscordEmoji[0] : matchUnicodeEmoji ? matchUnicodeEmoji[0] : "";
     let description = line.substr(line.indexOf(" ") + 1);
     emoji = emoji.trim() === "" ? description : emoji;
     description = description.trim() === "" ? emoji : description;
