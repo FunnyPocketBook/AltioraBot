@@ -16,6 +16,6 @@ export interface Config {
     minIntroWords: number;
     noReactionText: string;
     tieText: string;
-    winnerText: string;
+    majorityText: string;
   };
 }

@@ -17,13 +17,13 @@ There is currently no error checking so stuff might break. If you encounter a bu
   "minIntroWords": 10,
   "noReactionText": "No one reacted :(",
   "tieText": "The voting has been closed and there was a tie between",
-  "winnerText": "The voting has been closed, the winner is"
+  "majorityText": "The voting has been closed, the winner is"
 }
 ```
 
 `^config -set key value` will let anyone with the permission "Manage Server" modify the configuration of the bot.
 ```
-^config -set noReactionText "updated text" minIntroWords 5 winnerText "you can also change multiple keys at once like this"
+^config -set noReactionText "updated text" minIntroWords 5 majorityText "you can also change multiple keys at once like this"
 ```
 
 

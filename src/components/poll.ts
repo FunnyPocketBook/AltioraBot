@@ -62,7 +62,6 @@ export async function autoVote(message: Message): Promise<void> {
 }
 
 export async function autoPoll(message: Message): Promise<void> {
-  // if (!args.custom) {
   await message.react(Emojis.AGREE);
   await message.react(Emojis.DISAGREE);
   message.react(Emojis.QUESTIONMARK);
@@ -131,7 +130,7 @@ async function timer(message: Message, args: Arguments, seconds: number): Promis
       console.log(`${message.id}: [Poll] Custom message provided: ${args.message}`);
       message.reply(`${args.ping ? args.ping.join(", ") : ""} ${args.message.replace(/\^r/g, maxReaction.join(", "))}`);
     } else {
-      message.reply(`${args.ping ? args.ping.join(", ") : ""} ${config.options.winnerText}: ${maxReaction}`);
+      message.reply(`${args.ping ? args.ping.join(", ") : ""} ${config.options.majorityText}: ${maxReaction}`);
     }
   }
 }
