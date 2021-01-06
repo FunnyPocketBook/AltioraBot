@@ -44,6 +44,8 @@ export function argumentParser(args: string[], message?: Message): Interfaces.Ar
           const value = args[++i];
           sortedArguments.set.set(key, value.substring(1, value.length - 1));
         } while (i + 1 < args.length && !args[i + 1].startsWith("-"));
+      } else if (option === "player") {
+        sortedArguments[option] = args[++i];
       } else sortedArguments[option] = [];
       continue;
     } else if (option !== "") sortedArguments[option].push(arg);
@@ -51,12 +53,19 @@ export function argumentParser(args: string[], message?: Message): Interfaces.Ar
   return sortedArguments;
 }
 
-export function addRoleIfNotExists(message: Message, roleId: string, reason?: string): void {
-  const member = message.member;
-  const hasRole = member.roles.cache.some((role) => role.id === roleId);
+export async function addRoleIfNotExists(message: Message, roleId: string, reason?: string, repeat?: boolean): Promise<void> {
+  if (!repeat) return;
+  let member = message.member;
+  let hasRole = member.roles.cache.some((role) => role.id === roleId);
   if (!hasRole) {
-    console.log(`${message.id}: [Mod] ${member.displayName} has been assigned the role ${roleId} with reason ${reason}.`);
-    member.roles.add(roleId, reason);
+    member = await member.roles.add(roleId, reason);
+    hasRole = member.roles.cache.some((role) => role.id === roleId);
+    if (!hasRole && repeat) {
+      console.log(`${message.id}: [Mod] ${message.author.username} couldn't be assigned the role ${roleId}, retrying.`);
+      addRoleIfNotExists(message, roleId, reason, false);
+    } else {
+      console.log(`${message.id}: [Mod] ${message.author.username} has been assigned the role ${roleId} with reason ${reason}.`);
+    }
   }
 }
 

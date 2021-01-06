@@ -1,5 +1,6 @@
 import { Client } from "discord.js";
 import * as Poll from "./components/poll.js";
+import { getPlayerInfo } from "./components/player.js";
 import * as Config from "./components/config.js";
 import * as Util from "./util/util.js";
 
@@ -14,7 +15,7 @@ client.on("ready", () => {
 });
 
 // Create an event listener for messages
-client.on("message", (message) => {
+client.on("message", async (message) => {
   if (message.content.startsWith(prefix) && !message.author.bot) {
     const wholeMessage = message.content.split("\n");
     const options = wholeMessage[0]
@@ -41,6 +42,10 @@ client.on("message", (message) => {
           message.reply(`The configuration has been updated to:\n\`\`\`\n${Config.getConfigurableConfig()}\n\`\`\``);
         }
       }
+    } else if (command === "player") {
+      const playerInfo = await getPlayerInfo(options[0]);
+      if (!playerInfo) message.reply(`${options[0]} does not exist, please make sure that the name is correct.`);
+      else message.reply(`**${playerInfo.name}**\n${playerInfo.sr.text}\nMost played heroes: ${playerInfo.topHeroes.join(", ")}`);
     }
   } else if (message.content.includes("autorole")) Poll.autoRolePoll(message);
   else if (message.content.includes("autopoll")) Poll.autoPoll(message);
@@ -55,7 +60,8 @@ client.on("message", (message) => {
     Util.addRoleIfNotExists(
       message,
       config.options.communityRoleId,
-      `User introduced themselves with more than ${config.options.minIntroWords} words.`
+      `User introduced themselves with more than ${config.options.minIntroWords} words.`,
+      true
     );
   }
 });

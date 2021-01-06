@@ -6,6 +6,7 @@ export interface Arguments {
   set?: Map<string, string>;
   custom?: Map<string, string>;
   message?: string;
+  player?: string;
 }
 
 export interface Config {
@@ -17,5 +18,16 @@ export interface Config {
     noReactionText: string;
     tieText: string;
     majorityText: string;
+  };
+}
+
+export interface Player {
+  name: string;
+  topHeroes: string[];
+  sr: {
+    tank: number;
+    dps: number;
+    support: number;
+    text: string;
   };
 }
