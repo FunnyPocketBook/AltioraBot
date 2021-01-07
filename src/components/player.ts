@@ -23,14 +23,15 @@ export async function getPlayerInfo(player): Promise<Player> {
     playerInfo.error = `${player}'s profile is set to private.`;
     return playerInfo;
   }
-  const heroList = doc.querySelectorAll("#competitive .ProgressBar-title");
-  if (heroList.length === 0) {
+  const heroNameList = doc.querySelectorAll("#competitive .ProgressBar-title");
+  const heroTimeList = doc.querySelectorAll("#competitive .ProgressBar-description");
+  if (heroNameList.length === 0) {
     playerInfo.error = `${player} does not exist, please make sure that the name is correct.`;
     return playerInfo;
   }
   const compRank = doc.querySelectorAll(".competitive-rank-role");
   for (let i = 0; i < 5; i++) {
-    playerInfo.topHeroes.push(heroList[i].textContent);
+    playerInfo.topHeroes.push(`${heroNameList[i].textContent} (${heroTimeList[i].textContent})`);
   }
   for (let i = 0; i < compRank.length / 2; i++) {
     const rank = compRank[i];
