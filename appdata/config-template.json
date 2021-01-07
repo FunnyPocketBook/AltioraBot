@@ -6,6 +6,7 @@
     "minIntroWords": 5,
     "noReactionText": "No one reacted :(",
     "tieText": "The voting has been closed and there was a tie between",
-    "majorityText": "The voting has been closed, the majority voted for"
+    "majorityText": "The voting has been closed, the majority voted for",
+    "tempVCIdleTime": 60
   }
 }

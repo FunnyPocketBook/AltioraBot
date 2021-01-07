@@ -7,6 +7,7 @@ export interface Arguments {
   custom?: Map<string, string>;
   message?: string;
   player?: string;
+  userlimit?: string;
 }
 
 export interface Config {
@@ -18,6 +19,7 @@ export interface Config {
     noReactionText: string;
     tieText: string;
     majorityText: string;
+    tempVCIdleTime: number;
   };
 }
 
