@@ -44,7 +44,7 @@ client.on("message", async (message) => {
       }
     } else if (command === "player") {
       const playerInfo = await getPlayerInfo(options[0]);
-      if (!playerInfo) message.reply(`${options[0]} does not exist, please make sure that the name is correct.`);
+      if (playerInfo.error) message.reply(playerInfo.error);
       else message.reply(`**${playerInfo.name}**\n${playerInfo.sr.text}\nMost played heroes: ${playerInfo.topHeroes.join(", ")}`);
     }
   } else if (message.content.includes("autorole")) Poll.autoRolePoll(message);

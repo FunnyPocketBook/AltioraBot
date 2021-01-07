@@ -30,4 +30,5 @@ export interface Player {
     support: number;
     text: string;
   };
+  error: string;
 }

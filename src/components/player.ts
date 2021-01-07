@@ -8,9 +8,6 @@ export async function getPlayerInfo(player): Promise<Player> {
   if (request.status !== 200) return null;
   const dom = new jsdom.JSDOM(request.data);
   const doc = dom.window.document;
-  const heroList = doc.querySelectorAll("#competitive .ProgressBar-title");
-  if (heroList.length === 0) return null;
-  const compRank = doc.querySelectorAll(".competitive-rank-role");
   const playerInfo: Player = {
     name: player,
     topHeroes: [],
@@ -19,8 +16,19 @@ export async function getPlayerInfo(player): Promise<Player> {
       dps: 0,
       support: 0,
       text: ""
-    }
+    },
+    error: null
   };
+  if (doc.getElementsByClassName("PrivateProfile_content-container").length > 0) {
+    playerInfo.error = `${player}'s profile is set to private.`;
+    return playerInfo;
+  }
+  const heroList = doc.querySelectorAll("#competitive .ProgressBar-title");
+  if (heroList.length === 0) {
+    playerInfo.error = `${player} does not exist, please make sure that the name is correct.`;
+    return playerInfo;
+  }
+  const compRank = doc.querySelectorAll(".competitive-rank-role");
   for (let i = 0; i < 5; i++) {
     playerInfo.topHeroes.push(heroList[i].textContent);
   }
