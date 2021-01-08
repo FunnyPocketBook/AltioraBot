@@ -1,4 +1,4 @@
-import * as Emojis from "../util/emojis.js";
+import * as Const from "../util/constants.js";
 import * as Util from "../util/util.js";
 import { Message, MessageReaction, User } from "discord.js";
 import * as Config from "./config.js";
@@ -47,33 +47,33 @@ export function vote(message: Message, command: string, args: Arguments): Promis
 }
 
 export async function autoSchedule(message: Message): Promise<void> {
-  await message.react(Emojis.MONDAY);
-  await message.react(Emojis.TUESDAY);
-  await message.react(Emojis.WEDNESDAY);
-  await message.react(Emojis.THURSDAY);
-  await message.react(Emojis.FRIDAY);
-  await message.react(Emojis.SATURDAY);
-  message.react(Emojis.SUNDAY);
+  await message.react(Const.EMOJIS.MONDAY);
+  await message.react(Const.EMOJIS.TUESDAY);
+  await message.react(Const.EMOJIS.WEDNESDAY);
+  await message.react(Const.EMOJIS.THURSDAY);
+  await message.react(Const.EMOJIS.FRIDAY);
+  await message.react(Const.EMOJIS.SATURDAY);
+  message.react(Const.EMOJIS.SUNDAY);
 }
 
 export async function autoVote(message: Message): Promise<void> {
-  await message.react(Emojis.UPVOTE);
-  message.react(Emojis.DOWNVOTE);
+  await message.react(Const.EMOJIS.UPVOTE);
+  message.react(Const.EMOJIS.DOWNVOTE);
 }
 
 export async function autoPoll(message: Message): Promise<void> {
-  await message.react(Emojis.AGREE);
-  await message.react(Emojis.DISAGREE);
-  message.react(Emojis.QUESTIONMARK);
+  await message.react(Const.EMOJIS.AGREE);
+  await message.react(Const.EMOJIS.DISAGREE);
+  message.react(Const.EMOJIS.QUESTIONMARK);
 }
 
 export async function autoRolePoll(message: Message): Promise<void> {
-  await message.react(Emojis.MAINTANK);
-  await message.react(Emojis.OFFTANK);
-  await message.react(Emojis.HITSCAN);
-  await message.react(Emojis.PROJECTILE);
-  await message.react(Emojis.FLEXSUPPORT);
-  message.react(Emojis.MAINSUPPORT);
+  await message.react(Const.EMOJIS.MAINTANK);
+  await message.react(Const.EMOJIS.OFFTANK);
+  await message.react(Const.EMOJIS.HITSCAN);
+  await message.react(Const.EMOJIS.PROJECTILE);
+  await message.react(Const.EMOJIS.FLEXSUPPORT);
+  message.react(Const.EMOJIS.MAINSUPPORT);
 }
 
 async function customReactions(message: Message, args: Arguments): Promise<void> {
@@ -128,7 +128,7 @@ async function timer(message: Message, args: Arguments, seconds: number): Promis
     if (args.message) {
       // Custom message provided
       console.log(`${message.id}: [Poll] Custom message provided: ${args.message}`);
-      message.reply(`${args.ping ? args.ping.join(", ") : ""} ${args.message.replace(/\^r/g, maxReaction.join(", "))}`);
+      message.reply(`${args.ping ? args.ping.join(", ") : ""} ${args.message.replace(/\{result\}/g, maxReaction.join(", "))}`);
     } else {
       message.reply(`${args.ping ? args.ping.join(", ") : ""} ${config.options.majorityText}: ${maxReaction}`);
     }

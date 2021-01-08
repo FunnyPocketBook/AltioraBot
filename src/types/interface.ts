@@ -20,6 +20,12 @@ export interface Config {
     tieText: string;
     majorityText: string;
     tempVCIdleTime: number;
+    tempVCCategoryId: string;
+    tryoutsWelcomeMsg: string;
+    altioraWelcomeMsg: string;
+    communityWelcomeMsg: string;
+    minecraftWelcomeMsg: string;
+    gamingWelcomeMsg: string;
   };
 }
 

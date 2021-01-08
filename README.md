@@ -98,7 +98,7 @@ asdf asdflk
 aw3fd
 ```
 
-`-message` lets the user specify a custom text for the majority reaction text. It takes a string wrapped in double quotes as an input (`"this will be the custom message"`). The use can also use `^r` in the message itself to use the majority reaction in the message itself. If `-custom` is also given as option, `^r` will use the descriptor of the majority emoji instead of the emoji itself.
+`-message` lets the user specify a custom text for the majority reaction text. It takes a string wrapped in double quotes as an input (`"this will be the custom message"`). The use can also use `{result}` in the message itself to use the majority reaction in the message itself. If `-custom` is also given as option, `{result}` will use the descriptor of the majority emoji instead of the emoji itself.
 ```
-^autoschedule -message "Scrim on ^r at 20 CET!"
+^autoschedule -message "Scrim on {result} at 20 CET!"
 ```
