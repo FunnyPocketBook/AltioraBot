@@ -138,8 +138,10 @@ async function sendWelcomeMessage(oldMember: Discord.GuildMember | Discord.Parti
         console.log(`${message.id}: [Role] ${welcomeMessage}`);
       } else if (gamingName) {
         // Generic gaming role
-        const channel = client.channels.cache.get(Const.CHANNELS.ALTIORA.GAMING[gamingName]);
-        const welcomeMessage = config.options.gamingWelcomeMsg.replace(/\{member\}/g, newMember.toString());
+        const channel = client.channels.cache.get(Const.CHANNELS.ALTIORA.GAMING[gamingName].ID);
+        const welcomeMessage = config.options.gamingWelcomeMsg
+          .replace(/\{member\}/g, newMember.toString())
+          .replace(/\{channelName\}/g, Const.CHANNELS.ALTIORA.GAMING[gamingName].NAME);
         const message = await (channel as Discord.TextChannel).send(welcomeMessage);
         console.log(`${message.id}: [Role] ${welcomeMessage}`);
       }

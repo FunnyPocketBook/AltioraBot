@@ -141,12 +141,30 @@ export const CHANNELS = {
     ALTIORA_ROLE_MENU: "709181045496348722",
     MINECRAFT: "709213025311129660",
     GAMING: {
-      OSU: "720581229241565284",
-      APEX: "720581344609960007",
-      LEAGUE_OF_LEGENDS: "748245844226080849",
-      TERRARIA: "791104898971729931",
-      ANIMAL_CROSSING: "722046847799001108",
-      VALORANT: "722047381931294730"
+      OSU: {
+        ID: "720581229241565284",
+        NAME: "osu!"
+      },
+      APEX: {
+        ID: "720581344609960007",
+        NAME: "Apex Legends"
+      },
+      LEAGUE_OF_LEGENDS: {
+        ID: "748245844226080849",
+        NAME: "League of Legends"
+      },
+      TERRARIA: {
+        ID: "791104898971729931",
+        NAME: "Terraria"
+      },
+      ANIMAL_CROSSING: {
+        ID: "722046847799001108",
+        NAME: "Animal Crossing"
+      },
+      VALORANT: {
+        ID: "722047381931294730",
+        NAME: "Valorant"
+      }
     }
   }
 };
