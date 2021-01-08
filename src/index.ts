@@ -151,12 +151,12 @@ function configureConfig(message: Discord.Message, args: Interfaces.Arguments) {
   console.log(`${message.id}: [Bot] ${message.author.username} trying to access config`);
   if (message.member.hasPermission("MANAGE_GUILD")) {
     if (args.list) {
-      message.reply(`\`\`\`\n${Config.getConfigurableConfig()}\n\`\`\``);
+      message.reply(`\`\`\`JSON\n${Config.getConfigurableConfig()}\n\`\`\``);
     }
     if (args.set) {
       Config.setConfig(args.set);
       config = Config.loadConfig();
-      message.reply(`The configuration has been updated to:\n\`\`\`\n${Config.getConfigurableConfig()}\n\`\`\``);
+      message.reply(`The configuration has been updated to:\n\`\`\`JSON\n${Config.getConfigurableConfig()}\n\`\`\``);
     }
   }
 }
