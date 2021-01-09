@@ -50,7 +50,7 @@ export const Help = {
         },
         autorolepoll: {
           name: "autorolepoll",
-          description: `Reacts with ${EMOJIS.MAINTANK}, ${EMOJIS.OFFTANK}, ${EMOJIS.HITSCAN}, ${EMOJIS.PROJECTILE}, ${EMOJIS.FLEXSUPPORT}, and${EMOJIS.MAINSUPPORT}.`,
+          description: `Reacts with ${EMOJIS.MAINTANK}, ${EMOJIS.OFFTANK}, ${EMOJIS.HITSCAN}, ${EMOJIS.PROJECTILE}, ${EMOJIS.FLEXSUPPORT}, and ${EMOJIS.MAINSUPPORT}.`,
           usage: "`^autorolepoll [OPTIONS]` or `autorolepoll`",
           inline: true
         }
@@ -76,7 +76,7 @@ export const Help = {
         custom: {
           name: "custom",
           description:
-            "Sets custom reactions. Each reaction is on its own line and the reaction emoji is the first character of the line. The reaction description is separated by a whitespace from the reaction.",
+            "Sets custom reactions and overrides the default ones. Each reaction is on its own line and the reaction emoji is the first character of the line. The reaction description is separated by a whitespace from the reaction.",
           usage: "```\n^autovote -custom\n<emoji> <description>\n[<emoji> <description>]\n```"
         },
         message: {

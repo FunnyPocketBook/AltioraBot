@@ -88,12 +88,13 @@ async function commandHandler(message: Discord.Message) {
     makeVc(options, args, message);
   } else if (command === "help") {
     const embedCommands = new Discord.MessageEmbed()
-      .setDescription(Help.commands.usage)
       .setTitle("**Poll Commands**")
+      .setDescription(Help.commands.usage)
       .setURL("https://github.com/FunnyPocketBook/AltioraBot")
       .setColor(1778203);
     const embedOptions = new Discord.MessageEmbed()
       .setTitle("**Poll Options**")
+      .setDescription("These are the options that can be used with any poll commands.")
       .setURL("https://github.com/FunnyPocketBook/AltioraBot")
       .setColor(1778203);
     for (const [key, val] of Object.entries(Help.commands.poll.commands)) {
@@ -104,7 +105,7 @@ async function commandHandler(message: Discord.Message) {
       embedCommands.addField(name, value);
     }
     for (const [key, val] of Object.entries(Help.commands.poll.options)) {
-      const name = `**^${key}**`;
+      const name = `**-${key}**`;
       const value = `${val.description}\n${val.usage}`;
       embedOptions.addField(name, value);
     }
