@@ -12,13 +12,24 @@ There is currently no error checking so stuff might break. If you encounter a bu
 
 ```JSON
 {
-  "introductionChannelId": "id",
-  "communityRoleId": "id",
-  "minIntroWords": 10,
-  "noReactionText": "No one reacted :(",
-  "tieText": "The voting has been closed and there was a tie between",
-  "majorityText": "The voting has been closed, the winner is"
+  "botToken": "token",
+  "options": {
+    "introductionChannelId": "id",
+    "communityRoleId": "id",
+    "minIntroWords": 5,
+    "noReactionText": "No one reacted :(",
+    "tieText": "The voting has been closed and there was a tie between",
+    "majorityText": "The voting has been closed, the majority voted for",
+    "tempVCIdleTime": 60,
+    "tempVCCategoryId": "id",
+    "tryoutsWelcomeMsg": "Hi {member}, welcome to tryouts in {teamName}! Please write your role/rank for everyone to see and please keep an eye on this channel to know scrim times etc. :)",
+    "altioraWelcomeMsg": "Hi {member}, welcome to Altiora! Reminder to look at {altioraRoleMenu} to get some NEW FRESH EXCLUSIVE roles! :)",
+    "communityWelcomeMsg": "Hi {member}, welcome to Altiora! Reminder to look at {roleMenu} to get some roles! :)",
+    "minecraftWelcomeMsg": "Hi {member}, welcome to the Minecraft channel! Please check the pinned message for the server details and ask to be whitelisted! :)",
+    "gamingWelcomeMsg": "Hi {member}, welcome to {channelName}! You can ping LFG gaming in this channel to only ping those who also have the {channelName} role! :)"
+  }
 }
+
 ```
 
 `^config -set key value` will let anyone with the permission "Manage Server" modify the configuration of the bot.

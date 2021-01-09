@@ -6,6 +6,7 @@ import * as Util from "./util/util.js";
 import * as Channel from "./components/channel.js";
 import * as Interfaces from "./types/interface.js";
 import * as Const from "./util/constants.js";
+import { Help } from "./util/help.js";
 
 let config = Config.loadConfig();
 
@@ -21,24 +22,22 @@ client.on("ready", () => {
 
 // Create an event listener for messages
 client.on("message", (message) => {
-  if (message.content.startsWith(prefix) && !message.author.bot) {
-    commandHandler(message);
-  } else if (message.content.includes("autorole")) Poll.autoRolePoll(message);
-  else if (message.content.includes("autopoll")) Poll.autoPoll(message);
-  else if (message.content.includes("autovote")) Poll.autoVote(message);
-  else if (message.content.includes("autoschedule")) Poll.autoSchedule(message);
-  // Check introductory channel for messages and give community role to member if they have written an intro longer than 5 words
-  if (
-    message.channel.id === config.options.introductionChannelId &&
-    !message.author.bot &&
-    message.content.split(" ").length >= config.options.minIntroWords
-  ) {
-    Util.addRoleIfNotExists(
-      message,
-      config.options.communityRoleId,
-      `User introduced themselves with more than ${config.options.minIntroWords} words.`,
-      true
-    );
+  if (!message.author.bot) {
+    if (message.content.startsWith(prefix)) {
+      commandHandler(message);
+    } else if (message.content.includes("autorole")) Poll.autoRolePoll(message);
+    else if (message.content.includes("autopoll")) Poll.autoPoll(message);
+    else if (message.content.includes("autovote")) Poll.autoVote(message);
+    else if (message.content.includes("autoschedule")) Poll.autoSchedule(message);
+    // Check introductory channel for messages and give community role to member if they have written an intro longer than 5 words
+    if (message.channel.id === config.options.introductionChannelId && message.content.split(" ").length >= config.options.minIntroWords) {
+      Util.addRoleIfNotExists(
+        message,
+        config.options.communityRoleId,
+        `User introduced themselves with more than ${config.options.minIntroWords} words.`,
+        true
+      );
+    }
   }
 });
 
@@ -87,6 +86,36 @@ async function commandHandler(message: Discord.Message) {
   } else if (command === "makevc") {
     // Create temporary voice channel
     makeVc(options, args, message);
+  } else if (command === "help") {
+    const embedCommands = new Discord.MessageEmbed()
+      .setDescription(Help.commands.usage)
+      .setTitle("**Poll Commands**")
+      .setURL("https://github.com/FunnyPocketBook/AltioraBot")
+      .setColor(1778203);
+    const embedOptions = new Discord.MessageEmbed()
+      .setTitle("**Poll Options**")
+      .setURL("https://github.com/FunnyPocketBook/AltioraBot")
+      .setColor(1778203);
+    for (const [key, val] of Object.entries(Help.commands.poll.commands)) {
+      const name = `**^${key}**`;
+      const value = `${val.description}${val.inline ? " This command can be used in the middle of a message without options and `^`" : ""}\n${
+        val.usage
+      }`;
+      embedCommands.addField(name, value);
+    }
+    for (const [key, val] of Object.entries(Help.commands.poll.options)) {
+      const name = `**^${key}**`;
+      const value = `${val.description}\n${val.usage}`;
+      embedOptions.addField(name, value);
+    }
+    const embedPlayerInfo = new Discord.MessageEmbed()
+      .setTitle("**Player Info**")
+      .setURL("https://github.com/FunnyPocketBook/AltioraBot")
+      .setColor(1778203)
+      .addField(`**^${Help.commands.player.name}**`, `${Help.commands.player.description}\n${Help.commands.player.usage}`);
+    message.reply(embedCommands);
+    message.reply(embedOptions);
+    message.reply(embedPlayerInfo);
   }
 }
 
@@ -104,7 +133,6 @@ async function sendWelcomeMessage(oldMember: Discord.GuildMember | Discord.Parti
       } else if (gamingElement) {
         gamingName = gamingElement[0];
       }
-
       if (teamName) {
         // Tryouts role
         const channel = client.channels.cache.get(Const.CHANNELS.TEAMS[teamName].TRYOUTS);
