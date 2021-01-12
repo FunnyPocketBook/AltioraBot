@@ -80,7 +80,7 @@ export const CHANNELS = {
     EMINENCE: {
       TRYOUTS: "790529366475407400",
       GENERAL: "789248666359300183",
-      MANAGEMENT: "",
+      MANAGEMENT: "790574209616576512",
       NAME: "Eminence"
     },
     EVEREST: {
@@ -168,3 +168,5 @@ export const CHANNELS = {
     }
   }
 };
+
+export const ALTIORA_GUILD_ID = "709122055609778196";

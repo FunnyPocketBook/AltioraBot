@@ -22,42 +22,48 @@ client.on("ready", () => {
 
 // Create an event listener for messages
 client.on("message", (message) => {
-  if (!message.author.bot) {
-    if (message.content.startsWith(prefix)) {
-      commandHandler(message);
-    } else if (message.content.includes("autorole")) Poll.autoRolePoll(message);
-    else if (message.content.includes("autopoll")) Poll.autoPoll(message);
-    else if (message.content.includes("autovote")) Poll.autoVote(message);
-    else if (message.content.includes("autoschedule")) Poll.autoSchedule(message);
-    // Check introductory channel for messages and give community role to member if they have written an intro longer than 5 words
-    if (message.channel.id === config.options.introductionChannelId && message.content.split(" ").length >= config.options.minIntroWords) {
-      Util.addRoleIfNotExists(
-        message,
-        config.options.communityRoleId,
-        `User introduced themselves with more than ${config.options.minIntroWords} words.`,
-        true
-      );
+  if (message.guild.id === Const.ALTIORA_GUILD_ID) {
+    if (!message.author.bot) {
+      if (message.content.startsWith(prefix)) {
+        commandHandler(message);
+      } else if (message.content.toLowerCase().includes("autorole")) Poll.autoRolePoll(message);
+      else if (message.content.toLowerCase().includes("autopoll")) Poll.autoPoll(message);
+      else if (message.content.toLowerCase().includes("autovote")) Poll.autoVote(message);
+      else if (message.content.toLowerCase().includes("autoschedule")) Poll.autoSchedule(message);
+      // Check introductory channel for messages and give community role to member if they have written an intro longer than 5 words
+      if (message.channel.id === config.options.introductionChannelId && message.content.split(" ").length >= config.options.minIntroWords) {
+        Util.addRoleIfNotExists(
+          message,
+          config.options.communityRoleId,
+          `User introduced themselves with more than ${config.options.minIntroWords} words.`,
+          true
+        );
+      }
     }
   }
 });
 
 client.on("voiceStateUpdate", async (oldMember, newMember) => {
-  for (let i = tempVoiceChannels.length - 1; i >= 0; i--) {
-    const channel = tempVoiceChannels[i][0];
-    if (oldMember.channel?.equals(channel) && channel.members.size === 0) {
-      try {
-        await channel.delete();
-        console.log(`[Channel] ${channel.name} has been deleted.`);
-        tempVoiceChannels.splice(i, 1);
-      } catch (e) {
-        tempVoiceChannels.splice(i, 1);
+  if (oldMember.guild.id === Const.ALTIORA_GUILD_ID) {
+    for (let i = tempVoiceChannels.length - 1; i >= 0; i--) {
+      const channel = tempVoiceChannels[i][0];
+      if (oldMember.channel?.equals(channel) && channel.members.size === 0) {
+        try {
+          await channel.delete();
+          console.log(`[Channel] ${channel.name} has been deleted.`);
+          tempVoiceChannels.splice(i, 1);
+        } catch (e) {
+          tempVoiceChannels.splice(i, 1);
+        }
       }
     }
   }
 });
 
 client.on("guildMemberUpdate", (oldMember, newMember) => {
-  sendWelcomeMessage(oldMember, newMember);
+  if (oldMember.guild.id === Const.ALTIORA_GUILD_ID) {
+    sendWelcomeMessage(oldMember, newMember);
+  }
 });
 
 client.login(config.botToken);
