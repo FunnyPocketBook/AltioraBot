@@ -67,13 +67,13 @@ export const Help = {
         userlimit: {
           name: "userlimit",
           description: "Sets a user limit for the voice channel. Maximum value is 99.",
-          usage: "`^makevc -userlimit <limit>`"
+          usage: "`^makevc <channelName> -userlimit <limit>`"
         },
         permissions: {
           name: "permissions",
           description:
             "Sets the roles that may have access to the voice channel. Every other role is not permitted to see or join the voice channel. Multiple roles can be set and roles with a whitespace in the name have to be surrounded with double quotes.",
-          usage: "`^makevc -permissions <roleName>`"
+          usage: "`^makevc <channelName> -permissions <roleName>`"
         }
       }
     },
