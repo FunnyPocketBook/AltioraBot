@@ -2,7 +2,7 @@ import { Player } from "../types/interface.js";
 import axios from "axios";
 import * as jsdom from "jsdom";
 
-export async function getPlayerInfo(player): Promise<Player> {
+export async function getPlayerInfo(player: string): Promise<Player> {
   if (!player.match(/\S+#\d+/)) return null;
   const request = await axios.get(`https://playoverwatch.com/en-us/career/pc/${player.replace("#", "-")}`);
   if (request.status !== 200) return null;

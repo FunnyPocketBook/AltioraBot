@@ -6,7 +6,7 @@ import * as Util from "./util/util.js";
 import * as Channel from "./components/channel.js";
 import * as Interfaces from "./types/interface.js";
 import * as Const from "./util/constants.js";
-import { Help, help } from "./util/help.js";
+import { help } from "./util/help.js";
 
 let config = Config.loadConfig();
 
@@ -43,7 +43,7 @@ client.on("message", (message) => {
   }
 });
 
-client.on("voiceStateUpdate", async (oldMember, newMember) => {
+client.on("voiceStateUpdate", async (oldMember) => {
   if (oldMember.guild.id === Const.ALTIORA_GUILD_ID) {
     for (let i = tempVoiceChannels.length - 1; i >= 0; i--) {
       const channel = tempVoiceChannels[i][0];
@@ -63,6 +63,15 @@ client.on("voiceStateUpdate", async (oldMember, newMember) => {
 client.on("guildMemberUpdate", (oldMember, newMember) => {
   if (oldMember.guild.id === Const.ALTIORA_GUILD_ID) {
     sendWelcomeMessage(oldMember, newMember);
+  }
+});
+
+client.on("channelDelete", (deletedChannel) => {
+  for (let i = tempVoiceChannels.length - 1; i >= 0; i--) {
+    const channel = tempVoiceChannels[i][0];
+    if (deletedChannel.id === channel.id) {
+      tempVoiceChannels.splice(i, 1);
+    }
   }
 });
 
@@ -97,6 +106,7 @@ async function commandHandler(message: Discord.Message) {
   }
 }
 
+// TODO: Move to separate file
 async function sendWelcomeMessage(oldMember: Discord.GuildMember | Discord.PartialGuildMember, newMember: Discord.GuildMember) {
   const roleDifference = oldMember.roles.cache.difference(newMember.roles.cache);
   for (const role of roleDifference) {
@@ -181,6 +191,7 @@ function configureConfig(message: Discord.Message, args: Interfaces.Arguments) {
   }
 }
 
+// TODO: Move to separate file
 async function makeVc(options: Iterable<string>, args: Interfaces.Arguments, message: Discord.Message) {
   const category = message.guild.channels.cache.get(config.options.tempVCCategoryId);
   const name = options[0].replace(/(^")|("$)/g, "");

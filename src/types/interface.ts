@@ -8,6 +8,11 @@ export interface Arguments {
   message?: string;
   userlimit?: string;
   permissions?: string[];
+  poll?: string[];
+  pollOptions?: string[];
+  player?: string;
+  makevc?: string[];
+  all?: string[];
 }
 
 export interface Config {

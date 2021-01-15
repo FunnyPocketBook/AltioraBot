@@ -1,5 +1,6 @@
 import { EMOJIS } from "../util/constants.js";
 import { Message, MessageEmbed } from "discord.js";
+import { Arguments } from "../types/interface.js";
 
 export const Help = {
   commands: {
@@ -140,7 +141,7 @@ export const Help = {
   }
 };
 
-export function help(message: Message, args): void {
+export function help(message: Message, args: Arguments): void {
   const embedHelp = new MessageEmbed()
     .setTitle("**Help**")
     .setURL("https://github.com/FunnyPocketBook/AltioraBot")
