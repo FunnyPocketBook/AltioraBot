@@ -154,12 +154,12 @@ export function help(message: Message, args: Arguments): void {
     .setURL("https://github.com/FunnyPocketBook/AltioraBot")
     .setColor(1778203);
   addCommandFields(embedPollCommands, Help.commands.poll.commands);
-  const embedOptions = new MessageEmbed()
+  const embedPollOptions = new MessageEmbed()
     .setTitle("**Poll Options**")
     .setDescription(Help.commands.poll.options.description)
     .setURL("https://github.com/FunnyPocketBook/AltioraBot")
     .setColor(1778203);
-  addOptionFields(embedOptions, Help.commands.poll.options);
+  addOptionFields(embedPollOptions, Help.commands.poll.options);
   const embedPlayerInfo = new MessageEmbed()
     .setTitle("**Player Info**")
     .setURL("https://github.com/FunnyPocketBook/AltioraBot")
@@ -178,12 +178,12 @@ export function help(message: Message, args: Arguments): void {
 
   if (args.all) {
     message.reply(embedPollCommands);
-    message.reply(embedOptions);
+    message.reply(embedPollOptions);
     message.reply(embedPlayerInfo);
     message.reply(embedMakevc);
   } else {
     if (args.poll) message.reply(embedPollCommands);
-    if (args.pollOptions) message.reply(embedOptions);
+    if (args.pollOptions) message.reply(embedPollOptions);
     if (args.player) message.reply(embedPlayerInfo);
     if (args.makevc) message.reply(embedMakevc);
     if (Object.keys(args).length === 0 && args.constructor === Object) message.reply(embedHelp);

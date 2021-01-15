@@ -49,11 +49,12 @@ client.on("voiceStateUpdate", async (oldMember) => {
       const channel = tempVoiceChannels[i][0];
       if (oldMember.channel?.equals(channel) && channel.members.size === 0) {
         try {
-          await channel.delete();
+          const chan = await channel.delete();
           console.log(`[Channel] ${channel.name} has been deleted.`);
           tempVoiceChannels.splice(i, 1);
         } catch (e) {
           tempVoiceChannels.splice(i, 1);
+          console.log(e);
         }
       }
     }
@@ -215,6 +216,10 @@ async function makeVc(options: Iterable<string>, args: Interfaces.Arguments, mes
     },
     {
       id: Const.ROLES.OPERATIONS_STAFF,
+      allow: ["VIEW_CHANNEL", "CONNECT", "MANAGE_CHANNELS"]
+    },
+    {
+      id: client.user.id,
       allow: ["VIEW_CHANNEL", "CONNECT", "MANAGE_CHANNELS"]
     }
   ];
