@@ -1,8 +1,37 @@
 import { EMOJIS } from "../util/constants.js";
+import { Message, MessageEmbed } from "discord.js";
 
 export const Help = {
   commands: {
     usage: "Unless specified otherwise, every command has to start with a tiny mountain (caret) `^` and it has to be the first line of the message.",
+    help: {
+      name: "help",
+      description: "Shows this help section.",
+      usage: "`^help`",
+      inline: false,
+      options: {
+        player: {
+          name: "player",
+          description: "Shows help of the `^player` command.",
+          usage: "`^help -player`"
+        },
+        makevc: {
+          name: "makevc",
+          description: "Shows help of the `^makevc` command.",
+          usage: "`^help -makevc`"
+        },
+        poll: {
+          name: "poll",
+          description: "Shows help of all the `^autovote`, `^autopoll` etc. commands.",
+          usage: "`^help -poll`"
+        },
+        pollOptions: {
+          name: "pollOptions",
+          description: "Shows help of all the `^autovote`, `^autopoll` etc. options.",
+          usage: "`^help -pollOptions`"
+        }
+      }
+    },
     admin: {
       config: {
         name: "config",
@@ -17,7 +46,7 @@ export const Help = {
           set: {
             name: "set",
             description: "Sets one or more keys of the configuration.",
-            usage: "`^config -set key value [key value]`"
+            usage: "`^config -set <key> <value> [<key> <value>]`"
           }
         }
       }
@@ -28,7 +57,27 @@ export const Help = {
       usage: "`^player <battletag>`",
       inline: false
     },
+    makevc: {
+      name: "makevc",
+      description: `Creates a temporary voice channel, accessible to everyone with the community role, that is deleted after everyone has left the voice channel or if the voice channel is empty 60 seconds after its creation.`,
+      usage: "`^makevc <channelName>`",
+      inline: false,
+      options: {
+        userlimit: {
+          name: "userlimit",
+          description: "Sets a user limit for the voice channel. Maximum value is 99.",
+          usage: "`^makevc -userlimit <limit>`"
+        },
+        permissions: {
+          name: "permissions",
+          description:
+            "Sets the roles that may have access to the voice channel. Every other role is not permitted to see or join the voice channel. Multiple roles can be set and roles with a whitespace in the name have to be surrounded with double quotes.",
+          usage: "`^makevc -permissions <roleName>`"
+        }
+      }
+    },
     poll: {
+      description: "See `^help -pollOptions` for all options.",
       commands: {
         autovote: {
           name: "autovote",
@@ -56,6 +105,7 @@ export const Help = {
         }
       },
       options: {
+        description: "These are the options that can be used with any poll commands. See `^help -poll` for all commands.",
         timer: {
           name: "timer",
           description:
@@ -89,3 +139,70 @@ export const Help = {
     }
   }
 };
+
+export function help(message: Message, args): void {
+  const embedHelp = new MessageEmbed()
+    .setTitle("**Help**")
+    .setURL("https://github.com/FunnyPocketBook/AltioraBot")
+    .setColor(1778203)
+    .addField(`**^${Help.commands.help.name}**`, `${Help.commands.help.description}\n${Help.commands.help.usage}`);
+  addOptionFields(embedHelp, Help.commands.help.options);
+  const embedPollCommands = new MessageEmbed()
+    .setTitle("**Poll Commands**")
+    .setDescription(Help.commands.poll.description)
+    .setURL("https://github.com/FunnyPocketBook/AltioraBot")
+    .setColor(1778203);
+  addCommandFields(embedPollCommands, Help.commands.poll.commands);
+  const embedOptions = new MessageEmbed()
+    .setTitle("**Poll Options**")
+    .setDescription(Help.commands.poll.options.description)
+    .setURL("https://github.com/FunnyPocketBook/AltioraBot")
+    .setColor(1778203);
+  addOptionFields(embedOptions, Help.commands.poll.options);
+  const embedPlayerInfo = new MessageEmbed()
+    .setTitle("**Player Info**")
+    .setURL("https://github.com/FunnyPocketBook/AltioraBot")
+    .setColor(1778203)
+    .addField(`**^${Help.commands.player.name}**`, `${Help.commands.player.description}\n${Help.commands.player.usage}`);
+  const embedMakevc = new MessageEmbed()
+    .setTitle("**Create temporary VC**")
+    .setURL("https://github.com/FunnyPocketBook/AltioraBot")
+    .setColor(1778203)
+    .addField(`**^${Help.commands.makevc.name}**`, `${Help.commands.makevc.description}\n${Help.commands.makevc.usage}`);
+  addOptionFields(embedMakevc, Help.commands.makevc.options);
+
+  for (const key of Object.keys(args)) {
+    args[key] = true;
+  }
+
+  if (args.all) {
+    message.reply(embedPollCommands);
+    message.reply(embedOptions);
+    message.reply(embedPlayerInfo);
+    message.reply(embedMakevc);
+  } else {
+    if (args.poll) message.reply(embedPollCommands);
+    if (args.pollOptions) message.reply(embedOptions);
+    if (args.player) message.reply(embedPlayerInfo);
+    if (args.makevc) message.reply(embedMakevc);
+    if (Object.keys(args).length === 0 && args.constructor === Object) message.reply(embedHelp);
+  }
+}
+
+function addOptionFields(embed: MessageEmbed, options) {
+  for (const [key, val] of Object.entries(options)) {
+    const name = `**-${key}**`;
+    const value = `${(val as any).description}\n${(val as any).usage}`;
+    embed.addField(name, value);
+  }
+}
+
+function addCommandFields(embed: MessageEmbed, commands) {
+  for (const [key, val] of Object.entries(commands)) {
+    const name = `**^${key}**`;
+    const value = `${(val as any).description}${
+      (val as any).inline ? " This command can be used in the middle of a message without options and `^`" : ""
+    }\n${(val as any).usage}`;
+    embed.addField(name, value);
+  }
+}

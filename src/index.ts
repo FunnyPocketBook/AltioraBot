@@ -6,7 +6,7 @@ import * as Util from "./util/util.js";
 import * as Channel from "./components/channel.js";
 import * as Interfaces from "./types/interface.js";
 import * as Const from "./util/constants.js";
-import { Help } from "./util/help.js";
+import { Help, help } from "./util/help.js";
 
 let config = Config.loadConfig();
 
@@ -93,36 +93,7 @@ async function commandHandler(message: Discord.Message) {
     // Create temporary voice channel
     makeVc(options, args, message);
   } else if (command === "help") {
-    const embedCommands = new Discord.MessageEmbed()
-      .setTitle("**Poll Commands**")
-      .setDescription(Help.commands.usage)
-      .setURL("https://github.com/FunnyPocketBook/AltioraBot")
-      .setColor(1778203);
-    const embedOptions = new Discord.MessageEmbed()
-      .setTitle("**Poll Options**")
-      .setDescription("These are the options that can be used with any poll commands.")
-      .setURL("https://github.com/FunnyPocketBook/AltioraBot")
-      .setColor(1778203);
-    for (const [key, val] of Object.entries(Help.commands.poll.commands)) {
-      const name = `**^${key}**`;
-      const value = `${val.description}${val.inline ? " This command can be used in the middle of a message without options and `^`" : ""}\n${
-        val.usage
-      }`;
-      embedCommands.addField(name, value);
-    }
-    for (const [key, val] of Object.entries(Help.commands.poll.options)) {
-      const name = `**-${key}**`;
-      const value = `${val.description}\n${val.usage}`;
-      embedOptions.addField(name, value);
-    }
-    const embedPlayerInfo = new Discord.MessageEmbed()
-      .setTitle("**Player Info**")
-      .setURL("https://github.com/FunnyPocketBook/AltioraBot")
-      .setColor(1778203)
-      .addField(`**^${Help.commands.player.name}**`, `${Help.commands.player.description}\n${Help.commands.player.usage}`);
-    message.reply(embedCommands);
-    message.reply(embedOptions);
-    message.reply(embedPlayerInfo);
+    help(message, args);
   }
 }
 
@@ -167,8 +138,20 @@ async function sendWelcomeMessage(oldMember: Discord.GuildMember | Discord.Parti
         console.log(`${message.id}: [Role] ${welcomeMessage}`);
       } else if (roleId === Const.ROLES.ALTIORA.MINECRAFT) {
         // Minecraft role
-        const channel = client.channels.cache.get(Const.CHANNELS.ALTIORA.MINECRAFT);
+        const channel = client.channels.cache.get(Const.CHANNELS.ALTIORA.GAMING.MINECRAFT.ID);
         const welcomeMessage = config.options.minecraftWelcomeMsg.replace(/\{member\}/g, newMember.toString());
+        const message = await (channel as Discord.TextChannel).send(welcomeMessage);
+        console.log(`${message.id}: [Role] ${welcomeMessage}`);
+      } else if (roleId === Const.ROLES.ALTIORA.OSU) {
+        // Minecraft role
+        const channel = client.channels.cache.get(Const.CHANNELS.ALTIORA.GAMING.OSU.ID);
+        const welcomeMessage = config.options.osuWelcomeMsg.replace(/\{member\}/g, newMember.toString());
+        const message = await (channel as Discord.TextChannel).send(welcomeMessage);
+        console.log(`${message.id}: [Role] ${welcomeMessage}`);
+      } else if (roleId === Const.ROLES.ALTIORA.ANIMAL_CROSSING) {
+        // Minecraft role
+        const channel = client.channels.cache.get(Const.CHANNELS.ALTIORA.GAMING.ANIMAL_CROSSING.ID);
+        const welcomeMessage = config.options.animalCrossingWelcomeMsg.replace(/\{member\}/g, newMember.toString());
         const message = await (channel as Discord.TextChannel).send(welcomeMessage);
         console.log(`${message.id}: [Role] ${welcomeMessage}`);
       } else if (gamingName) {
@@ -201,6 +184,53 @@ function configureConfig(message: Discord.Message, args: Interfaces.Arguments) {
 async function makeVc(options: Iterable<string>, args: Interfaces.Arguments, message: Discord.Message) {
   const category = message.guild.channels.cache.get(config.options.tempVCCategoryId);
   const name = options[0].replace(/(^")|("$)/g, "");
+  const everyone = message.guild.roles.everyone.id;
+  const permissions: Discord.OverwriteResolvable[] = [
+    {
+      id: everyone,
+      deny: ["VIEW_CHANNEL", "CONNECT", "MANAGE_CHANNELS"]
+    },
+    {
+      id: message.member.id,
+      allow: ["VIEW_CHANNEL", "CONNECT", "MANAGE_CHANNELS"]
+    },
+    {
+      id: Const.ROLES.MODERATOR,
+      allow: ["VIEW_CHANNEL", "CONNECT", "MANAGE_CHANNELS"]
+    },
+    {
+      id: Const.ROLES.OPERATIONS_STAFF,
+      allow: ["VIEW_CHANNEL", "CONNECT", "MANAGE_CHANNELS"]
+    }
+  ];
+  if (!args.permissions) {
+    permissions.push({
+      id: config.options.communityRoleId,
+      allow: ["VIEW_CHANNEL", "CONNECT"]
+    });
+  } else {
+    const invalidRoles = [];
+    for (const roleName of args.permissions) {
+      const roleId = Util.getRoleIdFromName(Util.removeDoubleQuotes(roleName), message.guild.roles.cache);
+      if (roleId !== "") {
+        permissions.push({
+          id: roleId,
+          allow: ["VIEW_CHANNEL", "CONNECT"]
+        });
+      } else {
+        invalidRoles.push(roleName);
+      }
+    }
+    if (invalidRoles.length > 0) {
+      message.reply(
+        `The roles \`${invalidRoles.join(
+          ", "
+        )}\` are invalid. Please check again if the role names are correct. Roles with a whitespace have to be surrounded in double quotes, for example \`"Altiora Invitational"\`.`
+      );
+      return;
+    }
+  }
+
   if (parseInt(args.userlimit) > 99) {
     message.reply("The user limit for a voice channel cannot exceed 99. Consider omitting `-userlimit` to not set a user limit.");
     return;
@@ -208,7 +238,8 @@ async function makeVc(options: Iterable<string>, args: Interfaces.Arguments, mes
   const channelOptions: Discord.GuildCreateChannelOptions = {
     type: "voice",
     parent: category,
-    userLimit: args.userlimit ? parseInt(args.userlimit) : 0
+    userLimit: args.userlimit ? parseInt(args.userlimit) : 0,
+    permissionOverwrites: permissions
   };
   const newChannel = await Channel.createVoiceChannel(message, name, channelOptions, tempVoiceChannels);
   if (newChannel) {
@@ -220,7 +251,7 @@ async function makeVc(options: Iterable<string>, args: Interfaces.Arguments, mes
           const index = tempVoiceChannels.findIndex((e) => e[0].id === newChannel[0].id);
           tempVoiceChannels.splice(index, 1);
           console.log(`[Channel] ${newChannel[0].name} has been deleted because of inactivity.`);
-        } catch (e) {
+        } catch {
           console.log(`[Channel] ${newChannel[0].name} has already been deleted.`);
         }
       }

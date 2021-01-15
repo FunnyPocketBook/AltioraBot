@@ -1,5 +1,5 @@
 import * as Interfaces from "../types/interface";
-import { Message } from "discord.js";
+import { Message, Role } from "discord.js";
 import EmojiRegex from "emoji-regex/RGI_Emoji.js";
 
 export function humanTimeToSeconds(time: string): number {
@@ -67,6 +67,15 @@ export async function addRoleIfNotExists(message: Message, roleId: string, reaso
       console.log(`${message.id}: [Mod] ${message.author.username} has been assigned the role ${roleId} with reason ${reason}.`);
     }
   }
+}
+
+export function removeDoubleQuotes(string: string): string {
+  return string.replace(/(^")|("$)/g, "");
+}
+
+export function getRoleIdFromName(name: string, guildCache: Map<string, Role>): string {
+  const role = Array.from(guildCache).find(([, role]) => role.name === name);
+  return role ? role[0] : "";
 }
 
 function getEmojiAndDescription(message: Message): Map<string, string> {

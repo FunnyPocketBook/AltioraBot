@@ -13,6 +13,8 @@
     "altioraWelcomeMsg": "Hi {member}, welcome to Altiora! Reminder to look at {altioraRoleMenu} to get some NEW FRESH EXCLUSIVE roles! :)",
     "communityWelcomeMsg": "Hi {member}, welcome to Altiora! Reminder to look at {roleMenu} to get some roles! :)",
     "minecraftWelcomeMsg": "Hi {member}, welcome to the Minecraft channel! Please check the pinned message for the server details and ask to be whitelisted! :)",
+    "osuWelcomeMsg": "Hi {member}, welcome to the osu! channel! Feel free to post your osu! profile or maps! :)",
+    "animalCrossingWelcomeMsg": "Hi {member}, welcome to the Animal Crossing channel! Feel free to leave your island code! :)",
     "gamingWelcomeMsg": "Hi {member}, welcome to {channelName}! You can ping LFG gaming in this channel to only ping those who also have the {channelName} role! :)"
   }
 }

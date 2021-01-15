@@ -6,8 +6,8 @@ export interface Arguments {
   set?: Map<string, string>;
   custom?: Map<string, string>;
   message?: string;
-  player?: string;
   userlimit?: string;
+  permissions?: string[];
 }
 
 export interface Config {
@@ -25,6 +25,8 @@ export interface Config {
     altioraWelcomeMsg: string;
     communityWelcomeMsg: string;
     minecraftWelcomeMsg: string;
+    osuWelcomeMsg: string;
+    animalCrossingWelcomeMsg: string;
     gamingWelcomeMsg: string;
   };
 }
