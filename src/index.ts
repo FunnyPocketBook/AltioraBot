@@ -194,6 +194,10 @@ function configureConfig(message: Discord.Message, args: Interfaces.Arguments) {
 // TODO: Move to separate file
 async function makeVc(options: Iterable<string>, args: Interfaces.Arguments, message: Discord.Message) {
   const category = message.guild.channels.cache.get(config.options.tempVCCategoryId);
+  if (!options[0]) {
+    message.reply("Please provide a name for the voice channel. `^makevc channelName`");
+    return;
+  }
   const name = options[0].replace(/(^")|("$)/g, "");
   const everyone = message.guild.roles.everyone.id;
   const permissions: Discord.OverwriteResolvable[] = [
