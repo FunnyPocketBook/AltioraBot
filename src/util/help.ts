@@ -60,13 +60,13 @@ export const Help = {
     },
     makevc: {
       name: "makevc",
-      description: `Creates a temporary voice channel, accessible to everyone with the community role, that is deleted after everyone has left the voice channel or if the voice channel is empty 60 seconds after its creation.`,
+      description: `Creates a temporary voice channel, accessible to everyone with the community role, that is deleted after everyone has left the voice channel or if the voice channel is empty 60 seconds after its creation. Should the channel name include whitespaces, the whole name has to be surrounded by double quotes.`,
       usage: "`^makevc <channelName>`",
       inline: false,
       options: {
         userlimit: {
           name: "userlimit",
-          description: "Sets a user limit for the voice channel. Maximum value is 99.",
+          description: "Sets a user limit for the voice channel. Maximum value is 99, minimum value is 2.",
           usage: "`^makevc <channelName> -userlimit <limit>`"
         },
         permissions: {

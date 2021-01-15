@@ -254,6 +254,12 @@ async function makeVc(options: Iterable<string>, args: Interfaces.Arguments, mes
   if (parseInt(args.userlimit) > 99) {
     message.reply("The user limit for a voice channel cannot exceed 99. Consider omitting `-userlimit` to not set a user limit.");
     return;
+  } else if (parseInt(args.userlimit) === 1) {
+    message.reply(`No ego channels allowed! ${Const.EMOJIS.BLOBKNIFE}`);
+    return;
+  } else if (parseInt(args.userlimit) < 1) {
+    message.reply(`Please set a number between 2 and 99! ${Const.EMOJIS.BLOBKNIFE}`);
+    return;
   }
   const channelOptions: Discord.GuildCreateChannelOptions = {
     type: "voice",

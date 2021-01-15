@@ -16,7 +16,8 @@ export const EMOJIS = {
   HITSCAN: "<:hitscan:785864808931000341>",
   PROJECTILE: "<:projectile:785864809706291220>",
   FLEXSUPPORT: "<:flexsupport:785864809614016522>",
-  MAINSUPPORT: "<:mainsupport:785864808549449759>"
+  MAINSUPPORT: "<:mainsupport:785864808549449759>",
+  BLOBKNIFE: "<:BlobKnife:713765581962084454>"
 };
 
 export const ROLES = {
