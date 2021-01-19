@@ -6,7 +6,9 @@
     "discord.js": "github:discordjs/discord.js",
     "emoji-regex": "^9.2.0",
     "fs": "0.0.1-security",
-    "jsdom": "^16.4.0"
+    "jsdom": "^16.4.0",
+    "reflect-metadata": "^0.1.13",
+    "typeorm": "^0.2.29"
   },
   "name": "altiorabot",
   "description": "A Discord bot for the Overwatch community Altiora.",
