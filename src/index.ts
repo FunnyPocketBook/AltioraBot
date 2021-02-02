@@ -175,7 +175,7 @@ async function sendWelcomeMessage(oldMember: Discord.GuildMember | Discord.Parti
 
 function configureConfig(message: Discord.Message, args: Interfaces.Arguments) {
   console.log(`${message.id}: [Bot] ${message.author.username} trying to access config`);
-  if (message.member.hasPermission("MANAGE_CHANNELS")) {
+  if (message.member.permissions.has("MANAGE_CHANNELS")) {
     if (args.list) {
       message.reply(`\`\`\`JSON\n${Config.getConfigurableConfig()}\n\`\`\``);
     }

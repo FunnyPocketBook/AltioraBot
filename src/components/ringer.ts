@@ -7,10 +7,8 @@ export async function customRinger(message: Message, options: string[]): Promise
   const pingMembers = new Collection<string, GuildMember>();
   const randomString = Math.random().toString(36).substring(7);
   const tempRole = await message.guild.roles.create({
-    data: {
-      name: `Temp Ringer Role ${randomString}`,
-      mentionable: true
-    }
+    name: `Temp Ringer Role ${randomString}`,
+    mentionable: true
   });
   let region = false;
   let rank = false;
