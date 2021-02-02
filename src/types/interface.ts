@@ -13,6 +13,7 @@ export interface Arguments {
   player?: string;
   makevc?: string[];
   all?: string[];
+  role?: string[];
 }
 
 export interface Config {

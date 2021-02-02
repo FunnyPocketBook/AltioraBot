@@ -49,7 +49,7 @@ client.on("voiceStateUpdate", async (oldMember) => {
       const channel = tempVoiceChannels[i][0];
       if (oldMember.channel?.equals(channel) && channel.members.size === 0) {
         try {
-          const chan = await channel.delete();
+          await channel.delete();
           console.log(`[Channel] ${channel.name} has been deleted.`);
           tempVoiceChannels.splice(i, 1);
         } catch (e) {
@@ -104,6 +104,7 @@ async function commandHandler(message: Discord.Message) {
     makeVc(options, args, message);
   } else if (command === "help") {
     help(message, args);
+  } else if (command === "role") {
   }
 }
 
@@ -122,58 +123,48 @@ async function sendWelcomeMessage(oldMember: Discord.GuildMember | Discord.Parti
       } else if (gamingElement) {
         gamingName = gamingElement[0];
       }
+      let welcomeMessage = "";
+      let channel: Discord.Channel = null;
       if (teamName) {
         // Tryouts role
-        const channel = client.channels.cache.get(Const.CHANNELS.TEAMS[teamName].TRYOUTS);
+        channel = client.channels.cache.get(Const.CHANNELS.TEAMS[teamName].TRYOUTS);
         teamName = Const.CHANNELS.TEAMS[teamName].NAME;
-        const welcomeMessage = config.options.tryoutsWelcomeMsg.replace(/\{member\}/g, newMember.toString()).replace(/\{teamName\}/g, teamName);
-        const message = await (channel as Discord.TextChannel).send(welcomeMessage);
-        console.log(`${message.id}: [Role] ${welcomeMessage}`);
+        welcomeMessage = config.options.tryoutsWelcomeMsg.replace(/\{member\}/g, newMember.toString()).replace(/\{teamName\}/g, teamName);
       } else if (roleId === Const.ROLES.ALTIORA.ALTIORA) {
         // Altiora role
-        const channel = client.channels.cache.get(Const.CHANNELS.ALTIORA.FRIENDS_CHAT);
+        channel = client.channels.cache.get(Const.CHANNELS.ALTIORA.FRIENDS_CHAT);
         const altioraRoleMenu = client.channels.cache.get(Const.CHANNELS.ALTIORA.ALTIORA_ROLE_MENU);
-        const welcomeMessage = config.options.altioraWelcomeMsg
+        welcomeMessage = config.options.altioraWelcomeMsg
           .replace(/\{member\}/g, newMember.toString())
           .replace(/\{altioraRoleMenu\}/g, altioraRoleMenu.toString());
-        const message = await (channel as Discord.TextChannel).send(welcomeMessage);
-        console.log(`${message.id}: [Role] ${welcomeMessage}`);
       } else if (roleId === config.options.communityRoleId) {
         // Community role
-        const channel = client.channels.cache.get(Const.CHANNELS.COMMUNITY.GUEST_CHAT);
+        channel = client.channels.cache.get(Const.CHANNELS.COMMUNITY.GUEST_CHAT);
         const roleMenu = client.channels.cache.get(Const.CHANNELS.COMMUNITY.ROLE_MENU);
-        const welcomeMessage = config.options.communityWelcomeMsg
+        welcomeMessage = config.options.communityWelcomeMsg
           .replace(/\{member\}/g, newMember.toString())
           .replace(/\{roleMenu\}/g, roleMenu.toString());
-        const message = await (channel as Discord.TextChannel).send(welcomeMessage);
-        console.log(`${message.id}: [Role] ${welcomeMessage}`);
       } else if (roleId === Const.ROLES.ALTIORA.MINECRAFT) {
         // Minecraft role
-        const channel = client.channels.cache.get(Const.CHANNELS.ALTIORA.GAMING.MINECRAFT.ID);
-        const welcomeMessage = config.options.minecraftWelcomeMsg.replace(/\{member\}/g, newMember.toString());
-        const message = await (channel as Discord.TextChannel).send(welcomeMessage);
-        console.log(`${message.id}: [Role] ${welcomeMessage}`);
+        channel = client.channels.cache.get(Const.CHANNELS.ALTIORA.GAMING.MINECRAFT.ID);
+        welcomeMessage = config.options.minecraftWelcomeMsg.replace(/\{member\}/g, newMember.toString());
       } else if (roleId === Const.ROLES.ALTIORA.OSU) {
         // Minecraft role
-        const channel = client.channels.cache.get(Const.CHANNELS.ALTIORA.GAMING.OSU.ID);
-        const welcomeMessage = config.options.osuWelcomeMsg.replace(/\{member\}/g, newMember.toString());
-        const message = await (channel as Discord.TextChannel).send(welcomeMessage);
-        console.log(`${message.id}: [Role] ${welcomeMessage}`);
+        channel = client.channels.cache.get(Const.CHANNELS.ALTIORA.GAMING.OSU.ID);
+        welcomeMessage = config.options.osuWelcomeMsg.replace(/\{member\}/g, newMember.toString());
       } else if (roleId === Const.ROLES.ALTIORA.ANIMAL_CROSSING) {
         // Minecraft role
-        const channel = client.channels.cache.get(Const.CHANNELS.ALTIORA.GAMING.ANIMAL_CROSSING.ID);
-        const welcomeMessage = config.options.animalCrossingWelcomeMsg.replace(/\{member\}/g, newMember.toString());
-        const message = await (channel as Discord.TextChannel).send(welcomeMessage);
-        console.log(`${message.id}: [Role] ${welcomeMessage}`);
+        channel = client.channels.cache.get(Const.CHANNELS.ALTIORA.GAMING.ANIMAL_CROSSING.ID);
+        welcomeMessage = config.options.animalCrossingWelcomeMsg.replace(/\{member\}/g, newMember.toString());
       } else if (gamingName) {
         // Generic gaming role
-        const channel = client.channels.cache.get(Const.CHANNELS.ALTIORA.GAMING[gamingName].ID);
-        const welcomeMessage = config.options.gamingWelcomeMsg
+        channel = client.channels.cache.get(Const.CHANNELS.ALTIORA.GAMING[gamingName].ID);
+        welcomeMessage = config.options.gamingWelcomeMsg
           .replace(/\{member\}/g, newMember.toString())
           .replace(/\{channelName\}/g, Const.CHANNELS.ALTIORA.GAMING[gamingName].NAME);
-        const message = await (channel as Discord.TextChannel).send(welcomeMessage);
-        console.log(`${message.id}: [Role] ${welcomeMessage}`);
       }
+      const message = await (channel as Discord.TextChannel).send(welcomeMessage);
+      console.log(`${message.id}: [Role] ${welcomeMessage}`);
     }
   }
 }
