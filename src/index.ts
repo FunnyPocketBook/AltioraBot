@@ -4,6 +4,7 @@ import { getPlayerInfo } from "./components/player.js";
 import * as Config from "./components/config.js";
 import * as Util from "./util/util.js";
 import * as Channel from "./components/channel.js";
+import * as CustomRoles from "./components/ringer.js";
 import * as Interfaces from "./types/interface.js";
 import * as Const from "./util/constants.js";
 import { help } from "./util/help.js";
@@ -104,7 +105,8 @@ async function commandHandler(message: Discord.Message) {
     makeVc(options, args, message);
   } else if (command === "help") {
     help(message, args);
-  } else if (command === "role") {
+  } else if (command === "ringer") {
+    if (message.channel.id === Const.CHANNELS.LOST_AND_FOUND.ALTIORA_RINGERS) CustomRoles.customRinger(message, options);
   }
 }
 
@@ -163,15 +165,17 @@ async function sendWelcomeMessage(oldMember: Discord.GuildMember | Discord.Parti
           .replace(/\{member\}/g, newMember.toString())
           .replace(/\{channelName\}/g, Const.CHANNELS.ALTIORA.GAMING[gamingName].NAME);
       }
-      const message = await (channel as Discord.TextChannel).send(welcomeMessage);
-      console.log(`${message.id}: [Role] ${welcomeMessage}`);
+      if (channel !== null) {
+        const message = await (channel as Discord.TextChannel).send(welcomeMessage);
+        console.log(`${message.id}: [Role] ${welcomeMessage}`);
+      }
     }
   }
 }
 
 function configureConfig(message: Discord.Message, args: Interfaces.Arguments) {
   console.log(`${message.id}: [Bot] ${message.author.username} trying to access config`);
-  if (message.member.hasPermission("MANAGE_GUILD")) {
+  if (message.member.hasPermission("MANAGE_CHANNELS")) {
     if (args.list) {
       message.reply(`\`\`\`JSON\n${Config.getConfigurableConfig()}\n\`\`\``);
     }
@@ -202,11 +206,11 @@ async function makeVc(options: Iterable<string>, args: Interfaces.Arguments, mes
       allow: ["VIEW_CHANNEL", "CONNECT", "MANAGE_CHANNELS"]
     },
     {
-      id: Const.ROLES.MODERATOR,
+      id: Const.ROLES.STAFF.MODERATOR,
       allow: ["VIEW_CHANNEL", "CONNECT", "MANAGE_CHANNELS"]
     },
     {
-      id: Const.ROLES.OPERATIONS_STAFF,
+      id: Const.ROLES.STAFF.OPERATIONS_STAFF,
       allow: ["VIEW_CHANNEL", "CONNECT", "MANAGE_CHANNELS"]
     },
     {

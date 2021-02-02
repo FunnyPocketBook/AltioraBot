@@ -10,10 +10,11 @@ export interface Arguments {
   permissions?: string[];
   poll?: string[];
   pollOptions?: string[];
-  player?: string;
   makevc?: string[];
+  admin?: string[];
+  ringer?: string[];
+  player?: string;
   all?: string[];
-  role?: string[];
 }
 
 export interface Config {

@@ -30,6 +30,11 @@ export const Help = {
           name: "pollOptions",
           description: "Shows help of all the `^autovote`, `^autopoll` etc. options.",
           usage: "`^help -pollOptions`"
+        },
+        ringer: {
+          name: "ringer",
+          description: "Shows help of  the `^ringer` command.",
+          usage: "`^help -ringer`"
         }
       }
     },
@@ -74,6 +79,29 @@ export const Help = {
           description:
             "Sets the roles that may have access to the voice channel. Every other role is not permitted to see or join the voice channel. Multiple roles can be set and roles with a whitespace in the name have to be surrounded with double quotes.",
           usage: "`^makevc <channelName> -permissions <roleName>`"
+        }
+      }
+    },
+    ringer: {
+      name: "ringer",
+      description: `Pings ringers that have a certain combination of roles (region, rank and role). Order and capitalization doesn't matter and multiple roles and ranks can be used.`,
+      usage: "`^ringer <region> <rank> <role>`",
+      inline: false,
+      options: {
+        region: {
+          name: "region",
+          description: `EU, "EU ringer", "EU ringers", EUR\n"NA ringer", "NA ringers", NA, NAR`,
+          usage: `\`^ringer "EU ringer" gold "main tank"\``
+        },
+        rank: {
+          name: "rank",
+          description: `bronze, silver, gold, plat, platinum, dia, diamond, masters, gm, "grand master", grandmaster`,
+          usage: `\`^ringer "EU ringer" gold "main tank"\``
+        },
+        role: {
+          name: "role",
+          description: `mt, maintank, "main tank"\not, offtank, "off tank"\nhs, hitscan, hsdps, hdps, "hitscan dps\nproj, projectile, fdps, "projectile dps", "proj dps", "flex dps"\nms, mainsupport, "main support"\nfs, flexsupport, "flex support"`,
+          usage: `\`^ringer "EU ringer" gold "main tank"\``
         }
       }
     },
@@ -171,6 +199,18 @@ export function help(message: Message, args: Arguments): void {
     .setColor(1778203)
     .addField(`**^${Help.commands.makevc.name}**`, `${Help.commands.makevc.description}\n${Help.commands.makevc.usage}`);
   addOptionFields(embedMakevc, Help.commands.makevc.options);
+  const embedAdmin = new MessageEmbed()
+    .setTitle("**Change Bot configuration**")
+    .setURL("https://github.com/FunnyPocketBook/AltioraBot")
+    .setColor(1778203)
+    .addField(`**^${Help.commands.admin.config.name}**`, `${Help.commands.admin.config.description}`);
+  addOptionFields(embedAdmin, Help.commands.admin.config.options);
+  const embedRinger = new MessageEmbed()
+    .setTitle("**Ping Specific Ringer Roles**")
+    .setURL("https://github.com/FunnyPocketBook/AltioraBot")
+    .setColor(1778203)
+    .addField(`**^${Help.commands.ringer.name}**`, `${Help.commands.ringer.description}\n${Help.commands.ringer.usage}`);
+  addOptionFields(embedRinger, Help.commands.ringer.options);
 
   for (const key of Object.keys(args)) {
     args[key] = true;
@@ -181,11 +221,15 @@ export function help(message: Message, args: Arguments): void {
     message.reply(embedPollOptions);
     message.reply(embedPlayerInfo);
     message.reply(embedMakevc);
+    message.reply(embedRinger);
+    message.reply(embedAdmin);
   } else {
     if (args.poll) message.reply(embedPollCommands);
     if (args.pollOptions) message.reply(embedPollOptions);
     if (args.player) message.reply(embedPlayerInfo);
     if (args.makevc) message.reply(embedMakevc);
+    if (args.admin) message.reply(embedAdmin);
+    if (args.ringer) message.reply(embedRinger);
     if (Object.keys(args).length === 0 && args.constructor === Object) message.reply(embedHelp);
   }
 }
