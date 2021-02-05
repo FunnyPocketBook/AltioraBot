@@ -105,8 +105,8 @@ async function commandHandler(message: Discord.Message) {
     makeVc(options, args, message);
   } else if (command === "help") {
     help(message, args);
-  } else if (command === "ringer") {
-    if (message.channel.id === Const.CHANNELS.LOST_AND_FOUND.ALTIORA_RINGERS) CustomRoles.customRinger(message, options);
+  } else if (command === "ringer" || command === "find") {
+    if (message.channel.id === Const.CHANNELS.LOST_AND_FOUND.ALTIORA_RINGERS) CustomRoles.customRinger(message, options, command);
   }
 }
 

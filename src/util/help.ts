@@ -82,6 +82,29 @@ export const Help = {
         }
       }
     },
+    find: {
+      name: "find",
+      description: `Finds ringers that have a certain combination of roles (region, rank and role). Order and capitalization doesn't matter and multiple roles and ranks can be used.`,
+      usage: "`^find <region> <rank> <role>`",
+      inline: false,
+      options: {
+        region: {
+          name: "region",
+          description: `EU, "EU ringer", "EU ringers", EUR\n"NA ringer", "NA ringers", NA, NAR`,
+          usage: `\`^find EU gold plat "main tank" fs\``
+        },
+        rank: {
+          name: "rank",
+          description: `bronze, silver, gold, plat, platinum, dia, diamond, masters, gm, "grand master", grandmaster`,
+          usage: `\`^find na silver gold mt proj\``
+        },
+        role: {
+          name: "role",
+          description: `mt, maintank, "main tank"\not, offtank, "off tank"\nhs, hitscan, hsdps, hdps, "hitscan dps\nproj, projectile, fdps, "projectile dps", "proj dps", "flex dps"\nms, mainsupport, "main support"\nfs, flexsupport, "flex support"`,
+          usage: `\`^find "EU ringer" gold "main tank"\``
+        }
+      }
+    },
     ringer: {
       name: "ringer",
       description: `Pings ringers that have a certain combination of roles (region, rank and role). Order and capitalization doesn't matter and multiple roles and ranks can be used.`,
@@ -91,12 +114,12 @@ export const Help = {
         region: {
           name: "region",
           description: `EU, "EU ringer", "EU ringers", EUR\n"NA ringer", "NA ringers", NA, NAR`,
-          usage: `\`^ringer "EU ringer" gold "main tank"\``
+          usage: `\`^ringer EU gold plat "main tank" fs\``
         },
         rank: {
           name: "rank",
           description: `bronze, silver, gold, plat, platinum, dia, diamond, masters, gm, "grand master", grandmaster`,
-          usage: `\`^ringer "EU ringer" gold "main tank"\``
+          usage: `\`^ringer na silver gold mt proj\``
         },
         role: {
           name: "role",
@@ -211,6 +234,13 @@ export function help(message: Message, args: Arguments): void {
     .setColor(1778203)
     .addField(`**^${Help.commands.ringer.name}**`, `${Help.commands.ringer.description}\n${Help.commands.ringer.usage}`);
   addOptionFields(embedRinger, Help.commands.ringer.options);
+  addOptionFields(embedAdmin, Help.commands.admin.config.options);
+  const embedFind = new MessageEmbed()
+    .setTitle("**List Specific Ringer Roles**")
+    .setURL("https://github.com/FunnyPocketBook/AltioraBot")
+    .setColor(1778203)
+    .addField(`**^${Help.commands.find.name}**`, `${Help.commands.find.description}\n${Help.commands.find.usage}`);
+  addOptionFields(embedFind, Help.commands.find.options);
 
   for (const key of Object.keys(args)) {
     args[key] = true;
@@ -222,6 +252,7 @@ export function help(message: Message, args: Arguments): void {
     message.reply(embedPlayerInfo);
     message.reply(embedMakevc);
     message.reply(embedRinger);
+    message.reply(embedFind);
     message.reply(embedAdmin);
   } else {
     if (args.poll) message.reply(embedPollCommands);
@@ -230,6 +261,7 @@ export function help(message: Message, args: Arguments): void {
     if (args.makevc) message.reply(embedMakevc);
     if (args.admin) message.reply(embedAdmin);
     if (args.ringer) message.reply(embedRinger);
+    if (args.find) message.reply(embedFind);
     if (Object.keys(args).length === 0 && args.constructor === Object) message.reply(embedHelp);
   }
 }

@@ -13,6 +13,7 @@ export interface Arguments {
   makevc?: string[];
   admin?: string[];
   ringer?: string[];
+  find?: string[];
   player?: string;
   all?: string[];
 }
