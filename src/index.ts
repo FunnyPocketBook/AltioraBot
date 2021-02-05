@@ -100,14 +100,11 @@ async function commandHandler(message: Discord.Message) {
     const playerInfo = await getPlayerInfo(options[0]);
     if (playerInfo.error) message.reply(playerInfo.error);
     else message.reply(`**${playerInfo.name}**\n${playerInfo.sr.text}\nMost played heroes: ${playerInfo.topHeroes.join(", ")}`);
-  } else if (command === "makevc") {
-    // Create temporary voice channel
-    makeVc(options, args, message);
-  } else if (command === "help") {
-    help(message, args);
-  } else if (command === "ringer" || command === "find") {
+  } else if (command === "makevc") makeVc(options, args, message);
+  else if (command === "help") help(message, args);
+  else if (command === "ringer") {
     if (message.channel.id === Const.CHANNELS.LOST_AND_FOUND.ALTIORA_RINGERS) CustomRoles.customRinger(message, options, command);
-  }
+  } else if (command === "find") CustomRoles.customRinger(message, options, command);
 }
 
 // TODO: Move to separate file
