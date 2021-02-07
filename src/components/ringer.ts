@@ -120,7 +120,7 @@ export async function customRinger(message: Message, options: string[], command:
       await Promise.all(addRolePromise);
       pingMessage.delete();
       console.log(`[Ringer] ${reply}`);
-      message.reply(reply);
+      await message.reply(reply);
     } else if (command === "find") {
       const reply = `${options.join(", ")}:\n${getNamesOfMembers(pingMembers).join(", ")}`;
       console.log(`[Ringer] ${reply}`);

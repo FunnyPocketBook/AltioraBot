@@ -6,7 +6,7 @@ import * as Util from "./util/util.js";
 import * as Channel from "./components/channel.js";
 import * as CustomRoles from "./components/ringer.js";
 import * as Interfaces from "./types/interface.js";
-import * as Const from "./util/constants.js";
+import * as CONST from "./util/constants.js";
 import { help } from "./util/help.js";
 
 let config = Config.loadConfig();
@@ -23,7 +23,7 @@ client.on("ready", () => {
 
 // Create an event listener for messages
 client.on("message", (message) => {
-  if (message.guild.id === Const.ALTIORA_GUILD_ID) {
+  if (message.guild.id === CONST.ALTIORA_GUILD_ID) {
     if (!message.author.bot) {
       if (message.content.startsWith(prefix)) {
         commandHandler(message);
@@ -45,7 +45,7 @@ client.on("message", (message) => {
 });
 
 client.on("voiceStateUpdate", async (oldMember) => {
-  if (oldMember.guild.id === Const.ALTIORA_GUILD_ID) {
+  if (oldMember.guild.id === CONST.ALTIORA_GUILD_ID) {
     for (let i = tempVoiceChannels.length - 1; i >= 0; i--) {
       const channel = tempVoiceChannels[i][0];
       if (oldMember.channel?.equals(channel) && channel.members.size === 0) {
@@ -63,7 +63,7 @@ client.on("voiceStateUpdate", async (oldMember) => {
 });
 
 client.on("guildMemberUpdate", (oldMember, newMember) => {
-  if (oldMember.guild.id === Const.ALTIORA_GUILD_ID) {
+  if (oldMember.guild.id === CONST.ALTIORA_GUILD_ID) {
     sendWelcomeMessage(oldMember, newMember);
   }
 });
@@ -103,7 +103,8 @@ async function commandHandler(message: Discord.Message) {
   } else if (command === "makevc") makeVc(options, args, message);
   else if (command === "help") help(message, args);
   else if (command === "ringer") {
-    if (message.channel.id === Const.CHANNELS.LOST_AND_FOUND.ALTIORA_RINGERS) CustomRoles.customRinger(message, options, command);
+    if (message.channel.id === CONST.CHANNELS.LOST_AND_FOUND.ALTIORA_RINGERS || message.channel.id === CONST.CHANNELS.SERVER_MAKING.BOT_TEST)
+      CustomRoles.customRinger(message, options, command);
   } else if (command === "find") CustomRoles.customRinger(message, options, command);
 }
 
@@ -115,8 +116,8 @@ async function sendWelcomeMessage(oldMember: Discord.GuildMember | Discord.Parti
     if (newMember.roles.cache.has(roleId)) {
       // Find team name and gaming channel from role ID
       let teamName, gamingName;
-      const teamElement = Object.entries(Const.ROLES.TEAMS.TRYOUTS).find((r) => r[1] === roleId);
-      const gamingElement = Object.entries(Const.ROLES.ALTIORA.GAMING).find((r) => r[1] === roleId);
+      const teamElement = Object.entries(CONST.ROLES.TEAMS.TRYOUTS).find((r) => r[1] === roleId);
+      const gamingElement = Object.entries(CONST.ROLES.ALTIORA.GAMING).find((r) => r[1] === roleId);
       if (teamElement) {
         teamName = teamElement[0];
       } else if (gamingElement) {
@@ -126,41 +127,41 @@ async function sendWelcomeMessage(oldMember: Discord.GuildMember | Discord.Parti
       let channel: Discord.Channel = null;
       if (teamName) {
         // Tryouts role
-        channel = client.channels.cache.get(Const.CHANNELS.TEAMS[teamName].TRYOUTS);
-        teamName = Const.CHANNELS.TEAMS[teamName].NAME;
+        channel = client.channels.cache.get(CONST.CHANNELS.TEAMS[teamName].TRYOUTS);
+        teamName = CONST.CHANNELS.TEAMS[teamName].NAME;
         welcomeMessage = config.options.tryoutsWelcomeMsg.replace(/\{member\}/g, newMember.toString()).replace(/\{teamName\}/g, teamName);
-      } else if (roleId === Const.ROLES.ALTIORA.ALTIORA) {
+      } else if (roleId === CONST.ROLES.ALTIORA.ALTIORA) {
         // Altiora role
-        channel = client.channels.cache.get(Const.CHANNELS.ALTIORA.FRIENDS_CHAT);
-        const altioraRoleMenu = client.channels.cache.get(Const.CHANNELS.ALTIORA.ALTIORA_ROLE_MENU);
+        channel = client.channels.cache.get(CONST.CHANNELS.ALTIORA.FRIENDS_CHAT);
+        const altioraRoleMenu = client.channels.cache.get(CONST.CHANNELS.ALTIORA.ALTIORA_ROLE_MENU);
         welcomeMessage = config.options.altioraWelcomeMsg
           .replace(/\{member\}/g, newMember.toString())
           .replace(/\{altioraRoleMenu\}/g, altioraRoleMenu.toString());
       } else if (roleId === config.options.communityRoleId) {
         // Community role
-        channel = client.channels.cache.get(Const.CHANNELS.COMMUNITY.GUEST_CHAT);
-        const roleMenu = client.channels.cache.get(Const.CHANNELS.COMMUNITY.ROLE_MENU);
+        channel = client.channels.cache.get(CONST.CHANNELS.COMMUNITY.GUEST_CHAT);
+        const roleMenu = client.channels.cache.get(CONST.CHANNELS.COMMUNITY.ROLE_MENU);
         welcomeMessage = config.options.communityWelcomeMsg
           .replace(/\{member\}/g, newMember.toString())
           .replace(/\{roleMenu\}/g, roleMenu.toString());
-      } else if (roleId === Const.ROLES.ALTIORA.MINECRAFT) {
+      } else if (roleId === CONST.ROLES.ALTIORA.MINECRAFT) {
         // Minecraft role
-        channel = client.channels.cache.get(Const.CHANNELS.ALTIORA.GAMING.MINECRAFT.ID);
+        channel = client.channels.cache.get(CONST.CHANNELS.ALTIORA.GAMING.MINECRAFT.ID);
         welcomeMessage = config.options.minecraftWelcomeMsg.replace(/\{member\}/g, newMember.toString());
-      } else if (roleId === Const.ROLES.ALTIORA.OSU) {
+      } else if (roleId === CONST.ROLES.ALTIORA.OSU) {
         // Minecraft role
-        channel = client.channels.cache.get(Const.CHANNELS.ALTIORA.GAMING.OSU.ID);
+        channel = client.channels.cache.get(CONST.CHANNELS.ALTIORA.GAMING.OSU.ID);
         welcomeMessage = config.options.osuWelcomeMsg.replace(/\{member\}/g, newMember.toString());
-      } else if (roleId === Const.ROLES.ALTIORA.ANIMAL_CROSSING) {
+      } else if (roleId === CONST.ROLES.ALTIORA.ANIMAL_CROSSING) {
         // Minecraft role
-        channel = client.channels.cache.get(Const.CHANNELS.ALTIORA.GAMING.ANIMAL_CROSSING.ID);
+        channel = client.channels.cache.get(CONST.CHANNELS.ALTIORA.GAMING.ANIMAL_CROSSING.ID);
         welcomeMessage = config.options.animalCrossingWelcomeMsg.replace(/\{member\}/g, newMember.toString());
       } else if (gamingName) {
         // Generic gaming role
-        channel = client.channels.cache.get(Const.CHANNELS.ALTIORA.GAMING[gamingName].ID);
+        channel = client.channels.cache.get(CONST.CHANNELS.ALTIORA.GAMING[gamingName].ID);
         welcomeMessage = config.options.gamingWelcomeMsg
           .replace(/\{member\}/g, newMember.toString())
-          .replace(/\{channelName\}/g, Const.CHANNELS.ALTIORA.GAMING[gamingName].NAME);
+          .replace(/\{channelName\}/g, CONST.CHANNELS.ALTIORA.GAMING[gamingName].NAME);
       }
       if (channel !== null) {
         const message = await (channel as Discord.TextChannel).send(welcomeMessage);
@@ -203,11 +204,11 @@ async function makeVc(options: Iterable<string>, args: Interfaces.Arguments, mes
       allow: ["VIEW_CHANNEL", "CONNECT", "MANAGE_CHANNELS"]
     },
     {
-      id: Const.ROLES.STAFF.MODERATOR,
+      id: CONST.ROLES.STAFF.MODERATOR,
       allow: ["VIEW_CHANNEL", "CONNECT", "MANAGE_CHANNELS"]
     },
     {
-      id: Const.ROLES.STAFF.OPERATIONS_STAFF,
+      id: CONST.ROLES.STAFF.OPERATIONS_STAFF,
       allow: ["VIEW_CHANNEL", "CONNECT", "MANAGE_CHANNELS"]
     },
     {
@@ -247,10 +248,10 @@ async function makeVc(options: Iterable<string>, args: Interfaces.Arguments, mes
     message.reply("The user limit for a voice channel cannot exceed 99. Consider omitting `-userlimit` to not set a user limit.");
     return;
   } else if (parseInt(args.userlimit) === 1) {
-    message.reply(`No ego channels allowed! ${Const.EMOJIS.BLOBKNIFE}`);
+    message.reply(`No ego channels allowed! ${CONST.EMOJIS.BLOBKNIFE}`);
     return;
   } else if (parseInt(args.userlimit) < 1) {
-    message.reply(`Please set a number between 2 and 99! ${Const.EMOJIS.BLOBKNIFE}`);
+    message.reply(`Please set a number between 2 and 99! ${CONST.EMOJIS.BLOBKNIFE}`);
     return;
   }
   const channelOptions: Discord.GuildCreateChannelOptions = {
