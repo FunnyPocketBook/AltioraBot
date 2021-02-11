@@ -4,14 +4,14 @@ import * as CONST from "../util/constants.js";
 
 const roleOptions = {
   region: {
-    na: ["na", "na ringer", "na ringers", "nar"],
-    eu: ["eu", "eu ringer", "eu ringers", "eur"]
+    na_ringer: ["na", "na ringer", "na ringers", "nar"],
+    eu_ringer: ["eu", "eu ringer", "eu ringers", "eur"]
   },
   role: {
     main_tank: ["mt", "main tank", "maintank"],
     off_tank: ["ot", "off tank", "offtank"],
-    hitscan: ["hs", "hitscan", "hsdps", "hitscan dps", "hdps"],
-    projectile: ["proj", "projectile", "projectile dps", "proj dps", "flex dps", "fdps"],
+    hitscan_dps: ["hs", "hitscan", "hsdps", "hitscan dps", "hdps"],
+    projectile_dps: ["proj", "projectile", "projectile dps", "proj dps", "flex dps", "fdps"],
     flex_support: ["fs", "flexsupport", "flex support"],
     main_support: ["ms", "mainsupport", "main support"]
   },
@@ -21,7 +21,7 @@ const roleOptions = {
     gold: ["gold"],
     platinum: ["platinum", "plat"],
     diamond: ["diamond", "dia"],
-    masters: ["masters"],
+    masters: ["masters", "master"],
     grandmaster: ["gm", "grandmaster", "grand master"]
   }
 };
@@ -38,68 +38,23 @@ export async function customRinger(message: Message, options: string[], command:
     name: `Temp Ringer Role ${randomString}`,
     mentionable: true
   });
-  // TODO: loop through the options and dynamically assign the roles
-  // Apparently I'm smarter at 2:50 with Lunare <3
   for (let option of options) {
     option = Util.removeDoubleQuotes(option.toLowerCase());
-    // This can surely be done smarter but at 04:34 I'm not smart
-    if (roleOptions.region.na.includes(option)) {
-      // NA
-      roles.region.set(CONST.ROLES.COMMUNITY.NA_RINGER, null);
-    } else if (roleOptions.region.eu.includes(option)) {
-      // EU
-      roles.region.set(CONST.ROLES.COMMUNITY.EU_RINGER, null);
-    } else if (option === "tank") {
-      // Tank
-      roles.role.set(CONST.ROLES.COMMUNITY.ROLES.MAIN_TANK, null);
-      roles.role.set(CONST.ROLES.COMMUNITY.ROLES.OFF_TANK, null);
-    } else if (roleOptions.role.main_tank.includes(option)) {
-      // Main Tank
-      roles.role.set(CONST.ROLES.COMMUNITY.ROLES.MAIN_TANK, null);
-    } else if (roleOptions.role.off_tank.includes(option)) {
-      // Off Tank
-      roles.role.set(CONST.ROLES.COMMUNITY.ROLES.OFF_TANK, null);
-    } else if (option === "dps") {
-      // DPS
-      roles.role.set(CONST.ROLES.COMMUNITY.ROLES.HITSCAN_DPS, null);
-      roles.role.set(CONST.ROLES.COMMUNITY.ROLES.PROJECTILE_DPS, null);
-    } else if (roleOptions.role.hitscan.includes(option)) {
-      // Hitscan
-      roles.role.set(CONST.ROLES.COMMUNITY.ROLES.HITSCAN_DPS, null);
-    } else if (roleOptions.role.projectile.includes(option)) {
-      // Projectile
-      roles.role.set(CONST.ROLES.COMMUNITY.ROLES.PROJECTILE_DPS, null);
-    } else if (option === "support") {
-      // Support
-      roles.role.set(CONST.ROLES.COMMUNITY.ROLES.FLEX_SUPPORT, null);
-      roles.role.set(CONST.ROLES.COMMUNITY.ROLES.MAIN_SUPPORT, null);
-    } else if (roleOptions.role.flex_support.includes(option)) {
-      // Flex Support
-      roles.role.set(CONST.ROLES.COMMUNITY.ROLES.FLEX_SUPPORT, null);
-    } else if (roleOptions.role.main_support.includes(option)) {
-      // Main Support
-      roles.role.set(CONST.ROLES.COMMUNITY.ROLES.MAIN_SUPPORT, null);
-    } else if (roleOptions.rank.bronze.includes(option)) {
-      // Bronze
-      roles.rank.set(CONST.ROLES.COMMUNITY.RANKS.BRONZE, null);
-    } else if (roleOptions.rank.silver.includes(option)) {
-      // Silver
-      roles.rank.set(CONST.ROLES.COMMUNITY.RANKS.SILVER, null);
-    } else if (roleOptions.rank.gold.includes(option)) {
-      // Gold
-      roles.rank.set(CONST.ROLES.COMMUNITY.RANKS.GOLD, null);
-    } else if (roleOptions.rank.platinum.includes(option)) {
-      // Platinum
-      roles.rank.set(CONST.ROLES.COMMUNITY.RANKS.PLATINUM, null);
-    } else if (roleOptions.rank.diamond.includes(option)) {
-      // Diamond
-      roles.rank.set(CONST.ROLES.COMMUNITY.RANKS.DIAMOND, null);
-    } else if (roleOptions.rank.masters.includes(option)) {
-      // Masters
-      roles.rank.set(CONST.ROLES.COMMUNITY.RANKS.MASTERS, null);
-    } else if (roleOptions.rank.grandmaster.includes(option)) {
-      // Grandmaster
-      roles.rank.set(CONST.ROLES.COMMUNITY.RANKS.GM, null);
+    // Region
+    for (const [name, region] of Object.entries(roleOptions.region)) {
+      if (region.includes(option)) {
+        roles.region.set(CONST.ROLES.COMMUNITY[name.toUpperCase()], null);
+      }
+    }
+    for (const [name, role] of Object.entries(roleOptions.role)) {
+      if (role.includes(option)) {
+        roles.role.set(CONST.ROLES.COMMUNITY.ROLES[name.toUpperCase()], null);
+      }
+    }
+    for (const [name, rank] of Object.entries(roleOptions.rank)) {
+      if (rank.includes(option)) {
+        roles.rank.set(CONST.ROLES.COMMUNITY.RANKS[name.toUpperCase()], null);
+      }
     }
   }
   const addRolePromise: Promise<GuildMember>[] = [];
@@ -114,6 +69,7 @@ export async function customRinger(message: Message, options: string[], command:
         if (command === "ringer") addRolePromise.push(guildMember.roles.add(tempRole));
       }
     }
+    // If pings are unreliable, do not create a temp role but ping the members directly
     if (command === "ringer") {
       const reply = `LFR ${options.join(", ")}\nPinged ${pingMembers.size} members\n${getNamesOfMembers(pingMembers).join(", ")}\n<@&${tempRole.id}>`;
       const pingMessage = await message.reply(`Processing request, please wait...`);

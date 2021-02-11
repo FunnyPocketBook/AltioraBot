@@ -102,7 +102,7 @@ async function commandHandler(message: Discord.Message) {
     else message.reply(`**${playerInfo.name}**\n${playerInfo.sr.text}\nMost played heroes: ${playerInfo.topHeroes.join(", ")}`);
   } else if (command === "makevc") makeVc(options, args, message);
   else if (command === "help") help(message, args);
-  else if (command === "ringer") {
+  else if (command === "ringer" || command === "lfr") {
     if (message.channel.id === CONST.CHANNELS.LOST_AND_FOUND.ALTIORA_RINGERS || message.channel.id === CONST.CHANNELS.SERVER_MAKING.BOT_TEST)
       CustomRoles.customRinger(message, options, command);
   } else if (command === "find") CustomRoles.customRinger(message, options, command);
