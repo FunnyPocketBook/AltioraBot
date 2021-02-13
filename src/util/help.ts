@@ -105,7 +105,7 @@ export const Help = {
         },
         role: {
           name: "role",
-          description: `mt, maintank, "main tank"\not, offtank, "off tank"\nhs, hitscan, hsdps, hdps, "hitscan dps"\nproj, projectile, fdps, "projectile dps", "proj dps", "flex dps"\nms, mainsupport, "main support"\nfs, flexsupport, "flex support"`,
+          description: `tank, dps, support, sup\nmt, maintank, "main tank"\not, offtank, "off tank"\nhs, hitscan, hsdps, hdps, "hitscan dps"\nproj, projectile, fdps, "projectile dps", "proj dps", "flex dps"\nms, mainsupport, "main support"\nfs, flexsupport, "flex support"`,
           usage: `\`^find "EU ringer" gold "main tank"\``
         }
       }

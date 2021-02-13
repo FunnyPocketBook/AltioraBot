@@ -12,8 +12,8 @@ const roleOptions = {
     off_tank: ["ot", "off tank", "offtank", "tank"],
     hitscan_dps: ["hs", "hitscan", "hsdps", "hitscan dps", "hdps", "dps"],
     projectile_dps: ["proj", "projectile", "projectile dps", "proj dps", "flex dps", "fdps", "dps"],
-    flex_support: ["fs", "flexsupport", "flex support", "support"],
-    main_support: ["ms", "mainsupport", "main support", "support"]
+    flex_support: ["fs", "flexsupport", "flex support", "support", "sup"],
+    main_support: ["ms", "mainsupport", "main support", "support", "sup"]
   },
   rank: {
     bronze: ["bronze"],
