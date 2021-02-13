@@ -8,12 +8,12 @@ const roleOptions = {
     eu_ringer: ["eu", "eu ringer", "eu ringers", "eur"]
   },
   role: {
-    main_tank: ["mt", "main tank", "maintank"],
-    off_tank: ["ot", "off tank", "offtank"],
-    hitscan_dps: ["hs", "hitscan", "hsdps", "hitscan dps", "hdps"],
-    projectile_dps: ["proj", "projectile", "projectile dps", "proj dps", "flex dps", "fdps"],
-    flex_support: ["fs", "flexsupport", "flex support"],
-    main_support: ["ms", "mainsupport", "main support"]
+    main_tank: ["mt", "main tank", "maintank", "tank"],
+    off_tank: ["ot", "off tank", "offtank", "tank"],
+    hitscan_dps: ["hs", "hitscan", "hsdps", "hitscan dps", "hdps", "dps"],
+    projectile_dps: ["proj", "projectile", "projectile dps", "proj dps", "flex dps", "fdps", "dps"],
+    flex_support: ["fs", "flexsupport", "flex support", "support"],
+    main_support: ["ms", "mainsupport", "main support", "support"]
   },
   rank: {
     bronze: ["bronze"],
