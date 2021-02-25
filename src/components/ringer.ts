@@ -38,8 +38,8 @@ export async function customRinger(message: Message, options: string[], command:
     name: `Temp Ringer Role ${randomString}`,
     mentionable: true
   });
-  for (let option of options) {
-    option = Util.removeDoubleQuotes(option.toLowerCase());
+  options = options.map((o) => Util.removeDoubleQuotes(o.toLowerCase()).replace(/,/g, ""));
+  for (const option of options) {
     // Region
     for (const [name, region] of Object.entries(roleOptions.region)) {
       if (region.includes(option)) {
@@ -66,11 +66,11 @@ export async function customRinger(message: Message, options: string[], command:
       const existingRegions = guildMember.roles.cache.intersect(roles.region);
       if (existingRoles.size > 0 && existingRanks.size > 0 && existingRegions.size > 0) {
         pingMembers.set(id, guildMember);
-        if (command === "ringer") addRolePromise.push(guildMember.roles.add(tempRole));
+        if (command === "ringer" || command === "lfr") addRolePromise.push(guildMember.roles.add(tempRole));
       }
     }
     // If pings are unreliable, do not create a temp role but ping the members directly
-    if (command === "ringer") {
+    if (command === "ringer" || command === "lfr") {
       const reply = `LFR ${options.join(", ")}\nPinged ${pingMembers.size} members\n${getNamesOfMembers(pingMembers).join(", ")}\n<@&${tempRole.id}>`;
       const pingMessage = await message.reply(`Processing request, please wait...`);
       await Promise.all(addRolePromise);
