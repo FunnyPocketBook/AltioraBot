@@ -2,20 +2,22 @@
   "type": "module",
   "dependencies": {
     "@types/jsdom": "^16.2.6",
+    "@types/node": "^14.14.31",
     "axios": "^0.21.1",
     "discord.js": "github:discordjs/discord.js",
     "emoji-regex": "^9.2.1",
     "fs": "0.0.1-security",
     "jsdom": "^16.4.0",
+    "mysql": "^2.14.1",
     "reflect-metadata": "^0.1.13",
-    "typeorm": "^0.2.30"
+    "sqlite3": "^5.0.1",
+    "typeorm": "0.2.30"
   },
   "name": "altiorabot",
   "description": "A Discord bot for the Overwatch community Altiora.",
   "version": "1.0.0",
   "main": "index.js",
   "devDependencies": {
-    "@types/node": "^14.14.22",
     "@typescript-eslint/eslint-plugin": "^4.14.2",
     "@typescript-eslint/parser": "^4.14.2",
     "eslint": "^7.19.0",

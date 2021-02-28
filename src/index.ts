@@ -14,8 +14,26 @@ import * as Util from "./util/util.js";
 
 let config = Config.loadConfig();
 
-// Create an instance of a Discord client
-const client = new Discord.Client();
+const clientOptions = {
+  intents: new Discord.Intents([
+    "GUILDS",
+    "GUILD_MEMBERS",
+    "GUILD_BANS",
+    "GUILD_EMOJIS",
+    "GUILD_INTEGRATIONS",
+    "GUILD_WEBHOOKS",
+    "GUILD_INVITES",
+    "GUILD_VOICE_STATES",
+    "GUILD_PRESENCES",
+    "GUILD_MESSAGES",
+    "GUILD_MESSAGE_REACTIONS",
+    "GUILD_MESSAGE_TYPING",
+    "DIRECT_MESSAGES",
+    "DIRECT_MESSAGE_REACTIONS",
+    "DIRECT_MESSAGE_TYPING"
+  ])
+};
+const client = new Discord.Client(clientOptions);
 const prefix = "^";
 
 const tempVoiceChannels: [Discord.GuildChannel, Discord.GuildMember][] = [];
@@ -229,7 +247,8 @@ async function makeVc(options: Iterable<string>, args: Interfaces.Arguments, mes
   }
 }
 
-process.on("unhandledRejection", (error: Error) => {
+/*process.on("unhandledRejection", (error: Error) => {
   console.log("=== UNHANDLED REJECTION ===");
   console.dir(error.stack);
 });
+*/
