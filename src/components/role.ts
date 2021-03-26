@@ -14,8 +14,14 @@ export async function enroll(message: Discord.Message, options: string[]): Promi
     message.reply("Please provide the name of the team.");
     return;
   }
-  member.roles.add(teamId);
-  member.roles.add(CONST.ROLES.TEAMS.TRYOUT_ROLE);
+  try {
+    await member.roles.add(teamId);
+    await member.roles.add(CONST.ROLES.TEAMS.TRYOUT_ROLE);
+    message.react("👍");
+  } catch (e) {
+    message.react("👎");
+    console.error(e);
+  }
 }
 
 export async function derole(message: Discord.Message, options: string[]): Promise<void> {
@@ -31,11 +37,17 @@ export async function derole(message: Discord.Message, options: string[]): Promi
     message.reply("Please provide the name of the team.");
     return;
   }
-  await member.roles.remove(teamId);
-  const teamRoles = new Discord.Collection<string, Discord.Role>();
-  for (const [name, id] of Object.entries(CONST.ROLES.TEAMS.TRYOUTS)) {
-    teamRoles.set(name, await message.guild.roles.fetch(id));
+  try {
+    await member.roles.remove(teamId);
+    const teamRoles = new Discord.Collection<string, Discord.Role>();
+    for (const [, id] of Object.entries(CONST.ROLES.TEAMS.TRYOUTS)) {
+      teamRoles.set(id, await message.guild.roles.fetch(id));
+    }
+    const roleDifference = member.roles.cache.intersect(teamRoles);
+    if (roleDifference.size === 0) await member.roles.remove(CONST.ROLES.TEAMS.TRYOUT_ROLE);
+    message.react("👍");
+  } catch (e) {
+    message.react("👎");
+    console.error(e);
   }
-  const roleDifference = member.roles.cache.intersect(teamRoles);
-  if (roleDifference.size === 0) member.roles.remove(CONST.ROLES.TEAMS.TRYOUT_ROLE);
 }
