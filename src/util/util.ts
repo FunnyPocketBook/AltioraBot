@@ -1,6 +1,6 @@
 import * as Interfaces from "../types/interface";
 import { Message, Role } from "discord.js";
-import EmojiRegex from "emoji-regex/RGI_Emoji.js";
+import EmojiRegex from "emoji-regex";
 
 export function humanTimeToSeconds(time: string): number {
   if (!time) return -1;
