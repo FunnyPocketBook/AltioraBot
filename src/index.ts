@@ -2,6 +2,7 @@ import * as Discord from "discord.js";
 
 import * as Channel from "./components/channel.js";
 import * as CustomRoles from "./components/ringer.js";
+import * as Role from "./components/role.js";
 import * as Interfaces from "./types/interface.js";
 import * as Poll from "./components/poll.js";
 import * as Welcome from "./components/welcome.js";
@@ -138,6 +139,8 @@ async function commandHandler(message: Discord.Message) {
     if (message.channel.id === CONST.CHANNELS.LOST_AND_FOUND.ALTIORA_RINGERS || message.channel.id === CONST.CHANNELS.SERVER_MAKING.BOT_TEST)
       CustomRoles.customRinger(message, options, command);
   } else if (command === "find") CustomRoles.customRinger(message, options, command);
+  else if (command === "role") Role.enroll(message, options);
+  else if (command === "derole") Role.derole(message, options);
 }
 
 function configureConfig(message: Discord.Message, args: Interfaces.Arguments) {

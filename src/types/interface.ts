@@ -15,6 +15,8 @@ export interface Arguments {
   ringer?: string[];
   find?: string[];
   player?: string;
+  derole?: string[];
+  role?: string[];
   all?: string[];
 }
 

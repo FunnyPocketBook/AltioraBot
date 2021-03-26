@@ -13,12 +13,12 @@ export const Help = {
       options: {
         player: {
           name: "player",
-          description: "Shows help of the `^player` command.",
+          description: "Shows the career profile of a player given the battletag.",
           usage: "`^help -player`"
         },
         makevc: {
           name: "makevc",
-          description: "Shows help of the `^makevc` command.",
+          description: "Creates a temporaty voice channel.",
           usage: "`^help -makevc`"
         },
         poll: {
@@ -33,13 +33,23 @@ export const Help = {
         },
         ringer: {
           name: "ringer",
-          description: "Shows help of  the `^ringer` command.",
+          description: "Pings ringers with the provided options.",
           usage: "`^help -ringer`"
         },
         find: {
           name: "find",
-          description: "Shows help of  the `^find` command.",
+          description: "Find members with given ringer roles.",
           usage: "`^help -find`"
+        },
+        role: {
+          name: "role",
+          description: "Gives a given member the tryouts role and the team tryouts role.",
+          usage: "`^help -role"
+        },
+        derole: {
+          name: "derole",
+          description: "Removes the tryouts and the team tryouts role from a given member.",
+          usage: "`^help -derole"
         }
       }
     },
@@ -111,7 +121,7 @@ export const Help = {
       }
     },
     ringer: {
-      name: "ringer",
+      name: "ringer (alias: lfr)",
       description: `Pings ringers that have a certain combination of roles (region, rank and role). Order and capitalization doesn't matter and multiple roles and ranks can be used.`,
       usage: "`^ringer <region> <rank> <role>`",
       inline: false,
@@ -132,6 +142,18 @@ export const Help = {
           usage: `\`^ringer "EU ringer" gold "main tank"\``
         }
       }
+    },
+    role: {
+      name: "role",
+      description: `Gives the given member the tryouts role and the given team tryouts role. To derole, use the \`derole\` command.`,
+      usage: "`^role <member> <teamname>`",
+      inline: false
+    },
+    derole: {
+      name: "derole",
+      description: `Removes the tryouts and the given team tryouts role from the given member. To role in, use the \`role\` command.`,
+      usage: "`^derole <member> <teamname>`",
+      inline: false
     },
     poll: {
       description: "See `^help -pollOptions` for all options.",
@@ -246,6 +268,16 @@ export function help(message: Message, args: Arguments): void {
     .setColor(1778203)
     .addField(`**^${Help.commands.find.name}**`, `${Help.commands.find.description}\n${Help.commands.find.usage}`);
   addOptionFields(embedFind, Help.commands.find.options);
+  const embedRole = new MessageEmbed()
+    .setTitle("**Role In New Tryout**")
+    .setURL("https://github.com/FunnyPocketBook/AltioraBot")
+    .setColor(1778203)
+    .addField(`**^${Help.commands.role.name}**`, `${Help.commands.role.description}\n${Help.commands.role.usage}`);
+  const embedDerole = new MessageEmbed()
+    .setTitle("**Derole Tryout**")
+    .setURL("https://github.com/FunnyPocketBook/AltioraBot")
+    .setColor(1778203)
+    .addField(`**^${Help.commands.derole.name}**`, `${Help.commands.derole.description}\n${Help.commands.derole.usage}`);
 
   for (const key of Object.keys(args)) {
     args[key] = true;
@@ -258,6 +290,8 @@ export function help(message: Message, args: Arguments): void {
     message.reply(embedMakevc);
     message.reply(embedRinger);
     message.reply(embedFind);
+    message.reply(embedRole);
+    message.reply(embedDerole);
     message.reply(embedAdmin);
   } else {
     if (args.poll) message.reply(embedPollCommands);
@@ -267,6 +301,8 @@ export function help(message: Message, args: Arguments): void {
     if (args.admin) message.reply(embedAdmin);
     if (args.ringer) message.reply(embedRinger);
     if (args.find) message.reply(embedFind);
+    if (args.role) message.reply(embedRole);
+    if (args.derole) message.reply(embedDerole);
     if (Object.keys(args).length === 0 && args.constructor === Object) message.reply(embedHelp);
   }
 }
