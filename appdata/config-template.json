@@ -10,6 +10,7 @@
     "tempVCIdleTime": 60,
     "tempVCCategoryId": "id",
     "tryoutsWelcomeMsg": "Hi {member}, welcome to tryouts in {teamName}! Please write your role/rank for everyone to see and please keep an eye on this channel to know scrim times etc. :)",
+    "tryoutsValorantWelcomeMsg": "Hi {member}, welcome to tryouts for team {teamName}! Please write your act rank at present, your peak rank as well as your current preferred agents, and keep an eye on this channel for information on scrim times and such. :)",
     "altioraWelcomeMsg": "Hi {member}, welcome to Altiora! Reminder to look at {altioraRoleMenu} to get some NEW FRESH EXCLUSIVE roles! :)",
     "communityWelcomeMsg": "Hi {member}, welcome to Altiora! Reminder to look at {roleMenu} to get some roles! :)",
     "minecraftWelcomeMsg": "Hi {member}, welcome to the Minecraft channel! Please check the pinned message for the server details and ask to be whitelisted! :)",

@@ -32,6 +32,7 @@ export interface Config {
     tempVCIdleTime: number;
     tempVCCategoryId: string;
     tryoutsWelcomeMsg: string;
+    tryoutsValorantWelcomeMsg: string;
     altioraWelcomeMsg: string;
     communityWelcomeMsg: string;
     minecraftWelcomeMsg: string;

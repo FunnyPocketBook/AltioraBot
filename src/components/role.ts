@@ -2,7 +2,7 @@ import * as Discord from "discord.js";
 import * as CONST from "../util/constants.js";
 
 export async function enroll(message: Discord.Message, options: string[]): Promise<void> {
-  if (!message.member.roles.cache.has(CONST.ROLES.STAFF.TEAM_MANAGER)) return;
+  if (!message.member.roles.cache.has(CONST.ROLES.STAFF.TEAM_MANAGER) && !message.member.roles.cache.has(CONST.ROLES.STAFF.OPERATIONS_STAFF)) return;
   const user = message.mentions.users.first();
   if (user === undefined) {
     message.reply("Please mention a user.");
@@ -17,15 +17,15 @@ export async function enroll(message: Discord.Message, options: string[]): Promi
   try {
     await member.roles.add(teamId);
     await member.roles.add(CONST.ROLES.TEAMS.TRYOUT_ROLE);
-    message.react("👍");
+    message.react(CONST.EMOJIS.CHECKMARK);
   } catch (e) {
-    message.react("👎");
+    message.react(CONST.EMOJIS.X);
     console.error(e);
   }
 }
 
 export async function derole(message: Discord.Message, options: string[]): Promise<void> {
-  if (!message.member.roles.cache.has(CONST.ROLES.STAFF.TEAM_MANAGER)) return;
+  if (!message.member.roles.cache.has(CONST.ROLES.STAFF.TEAM_MANAGER) && !message.member.roles.cache.has(CONST.ROLES.STAFF.OPERATIONS_STAFF)) return;
   const user = message.mentions.users.first();
   if (user === undefined) {
     message.reply("Please mention a user.");
@@ -45,9 +45,9 @@ export async function derole(message: Discord.Message, options: string[]): Promi
     }
     const roleDifference = member.roles.cache.intersect(teamRoles);
     if (roleDifference.size === 0) await member.roles.remove(CONST.ROLES.TEAMS.TRYOUT_ROLE);
-    message.react("👍");
+    message.react(CONST.EMOJIS.CHECKMARK);
   } catch (e) {
-    message.react("👎");
+    message.react(CONST.EMOJIS.X);
     console.error(e);
   }
 }

@@ -27,7 +27,11 @@ export async function sendWelcomeMessage(
         // Tryouts role
         channel = client.channels.cache.get(CONST.CHANNELS.TEAMS[teamName].TRYOUTS);
         teamName = CONST.CHANNELS.TEAMS[teamName].NAME;
-        welcomeMessage = config.options.tryoutsWelcomeMsg.replace(/\{member\}/g, newMember.toString()).replace(/\{teamName\}/g, teamName);
+        if (teamName === CONST.CHANNELS.TEAMS.KILIMANJARO.NAME) {
+          welcomeMessage = config.options.tryoutsValorantWelcomeMsg.replace(/\{member\}/g, newMember.toString()).replace(/\{teamName\}/g, teamName);
+        } else {
+          welcomeMessage = config.options.tryoutsWelcomeMsg.replace(/\{member\}/g, newMember.toString()).replace(/\{teamName\}/g, teamName);
+        }
       } else if (roleId === CONST.ROLES.ALTIORA.ALTIORA) {
         // Altiora role
         channel = client.channels.cache.get(CONST.CHANNELS.ALTIORA.FRIENDS_CHAT);
@@ -35,16 +39,7 @@ export async function sendWelcomeMessage(
         welcomeMessage = config.options.altioraWelcomeMsg
           .replace(/\{member\}/g, newMember.toString())
           .replace(/\{altioraRoleMenu\}/g, altioraRoleMenu.toString());
-      } /*else if (roleId === config.options.communityRoleId) {
-        // Community role
-        channel = client.channels.cache.get(CONST.CHANNELS.COMMUNITY.GUEST_CHAT);
-        const roleMenu = client.channels.cache.get(CONST.CHANNELS.COMMUNITY.ROLE_MENU);
-        welcomeMessage = config.options.communityWelcomeMsg
-          .replace(/\{member\}/g, newMember.toString())
-          .replace(/\{roleMenu\}/g, roleMenu.toString());
-      }*/ else if (
-        roleId === CONST.ROLES.ALTIORA.MINECRAFT
-      ) {
+      } else if (roleId === CONST.ROLES.ALTIORA.MINECRAFT) {
         // Minecraft role
         channel = client.channels.cache.get(CONST.CHANNELS.ALTIORA.GAMING.MINECRAFT.ID);
         welcomeMessage = config.options.minecraftWelcomeMsg.replace(/\{member\}/g, newMember.toString());
