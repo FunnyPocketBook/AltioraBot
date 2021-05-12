@@ -44,12 +44,12 @@ export const Help = {
         role: {
           name: "role",
           description: "Gives a given member the tryouts role and the team tryouts role.",
-          usage: "`^help -role"
+          usage: "`^help -role`"
         },
         derole: {
           name: "derole",
           description: "Removes the tryouts and the team tryouts role from a given member.",
-          usage: "`^help -derole"
+          usage: "`^help -derole`"
         }
       }
     },
