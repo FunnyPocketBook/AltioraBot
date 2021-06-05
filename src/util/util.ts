@@ -78,9 +78,10 @@ export function getRoleIdFromName(name: string, guildCache: Map<string, Role>): 
   return role ? role[0] : "";
 }
 
-export function britishify(message: Message): string {
+export function britishify(message: Message): [string, boolean] {
   const tokens = message.content.split(" ");
   let result = "";
+  let changed = false;
   for (let token of tokens) {
     const regex = /t/gi;
     let r;
@@ -89,11 +90,14 @@ export function britishify(message: Message): string {
       indices.push(r.index);
     }
     for (const i of indices) {
-      if (i > 0 && isVowel(token[i - 1])) token = token.substring(0, i) + "'" + token.substring(i + 1);
+      if (i > 0 && isVowel(token[i - 1])) {
+        token = token.substring(0, i) + "'" + token.substring(i + 1);
+        changed = true;
+      }
     }
     result += token + " ";
   }
-  return result;
+  return [result, changed];
 }
 
 function isVowel(char: string) {

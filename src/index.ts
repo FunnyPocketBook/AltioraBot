@@ -55,8 +55,11 @@ client.on("message", (message) => {
       else if (message.content.toLowerCase().includes("autoschedule")) Poll.autoSchedule(message);
       else if (message.author.id === "490993140837253120") {
         if (Math.floor(Math.random() * 10) == 1) {
-          const britified = Util.britishify(message);
-          message.reply(britified);
+          const [britified, changed] = Util.britishify(message);
+          if (changed) {
+            message.reply(britified);
+            console.log(`${message.id}: [Joke] ${britified}`);
+          }
         }
       }
       if (message.channel.id === config.options.introductionChannelId && message.content.split(" ").length >= config.options.minIntroWords) {
