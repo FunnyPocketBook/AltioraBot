@@ -78,6 +78,29 @@ export function getRoleIdFromName(name: string, guildCache: Map<string, Role>): 
   return role ? role[0] : "";
 }
 
+export function britishify(message: Message): string {
+  const tokens = message.content.split(" ");
+  let result = "";
+  for (let token of tokens) {
+    const regex = /t/gi;
+    let r;
+    const indices = [];
+    while ((r = regex.exec(token))) {
+      indices.push(r.index);
+    }
+    for (const i of indices) {
+      if (i > 0 && isVowel(token[i - 1])) token = token.substring(0, i) + "'" + token.substring(i + 1);
+    }
+    result += token + " ";
+  }
+  return result;
+}
+
+function isVowel(char: string) {
+  const lowerCase = char.toLocaleLowerCase();
+  return lowerCase == "a" || lowerCase == "e" || lowerCase == "i" || lowerCase == "o" || lowerCase == "u";
+}
+
 function getEmojiAndDescription(message: Message): Map<string, string> {
   const text = message.content.split("\n");
   const reactions = new Map();

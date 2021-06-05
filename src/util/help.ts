@@ -18,7 +18,7 @@ export const Help = {
         },
         makevc: {
           name: "makevc",
-          description: "Creates a temporaty voice channel.",
+          description: "Creates a temporary voice channel.",
           usage: "`^help -makevc`"
         },
         poll: {

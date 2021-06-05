@@ -53,8 +53,14 @@ client.on("message", (message) => {
       else if (message.content.toLowerCase().includes("autopoll")) Poll.autoPoll(message);
       else if (message.content.toLowerCase().includes("autovote")) Poll.autoVote(message);
       else if (message.content.toLowerCase().includes("autoschedule")) Poll.autoSchedule(message);
-      // Check introductory channel for messages and give community role to member if they have written an intro longer than 5 words
+      else if (message.author.id === "490993140837253120") {
+        if (Math.floor(Math.random() * 10) == 1) {
+          const britified = Util.britishify(message);
+          message.reply(britified);
+        }
+      }
       if (message.channel.id === config.options.introductionChannelId && message.content.split(" ").length >= config.options.minIntroWords) {
+        // Check introductory channel for messages and give community role to member if they have written an intro longer than 5 words
         Util.addRoleIfNotExists(
           message,
           config.options.communityRoleId,
@@ -250,8 +256,8 @@ async function makeVc(options: Iterable<string>, args: Interfaces.Arguments, mes
   }
 }
 
-/*process.on("unhandledRejection", (error: Error) => {
+process.on("unhandledRejection", (error: Error) => {
+  console.log(new Date().toISOString());
   console.log("=== UNHANDLED REJECTION ===");
   console.dir(error.stack);
 });
-*/

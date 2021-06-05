@@ -44,11 +44,11 @@ export async function sendWelcomeMessage(
         channel = client.channels.cache.get(CONST.CHANNELS.ALTIORA.GAMING.MINECRAFT.ID);
         welcomeMessage = config.options.minecraftWelcomeMsg.replace(/\{member\}/g, newMember.toString());
       } else if (roleId === CONST.ROLES.ALTIORA.OSU) {
-        // Minecraft role
+        // Osu role
         channel = client.channels.cache.get(CONST.CHANNELS.ALTIORA.GAMING.OSU.ID);
         welcomeMessage = config.options.osuWelcomeMsg.replace(/\{member\}/g, newMember.toString());
       } else if (roleId === CONST.ROLES.ALTIORA.ANIMAL_CROSSING) {
-        // Minecraft role
+        // Animal Crossing role
         channel = client.channels.cache.get(CONST.CHANNELS.ALTIORA.GAMING.ANIMAL_CROSSING.ID);
         welcomeMessage = config.options.animalCrossingWelcomeMsg.replace(/\{member\}/g, newMember.toString());
       } else if (gamingName) {
