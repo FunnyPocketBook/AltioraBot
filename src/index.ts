@@ -53,15 +53,15 @@ client.on("message", (message) => {
       else if (message.content.toLowerCase().includes("autopoll")) Poll.autoPoll(message);
       else if (message.content.toLowerCase().includes("autovote")) Poll.autoVote(message);
       else if (message.content.toLowerCase().includes("autoschedule")) Poll.autoSchedule(message);
-      else if (message.author.id === "490993140837253120") {
-        if (Math.floor(Math.random() * 10) == 1) {
-          const [britified, changed] = Util.britishify(message);
-          if (changed) {
-            message.reply(britified);
-            console.log(`${message.id}: [Joke] ${britified}`);
-          }
-        }
-      }
+      // else if (message.author.id === "490993140837253120") {
+      //   if (Math.floor(Math.random()) > config.troll.) {
+      //     const [britified, changed] = Util.britishify(message);
+      //     if (changed) {
+      //       message.reply(britified);
+      //       console.log(`${message.id}: [Joke] ${britified}`);
+      //     }
+      //   }
+      // }
       if (message.channel.id === config.options.introductionChannelId && message.content.split(" ").length >= config.options.minIntroWords) {
         // Check introductory channel for messages and give community role to member if they have written an intro longer than 5 words
         Util.addRoleIfNotExists(
