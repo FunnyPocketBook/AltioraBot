@@ -40,6 +40,7 @@ export interface Config {
     animalCrossingWelcomeMsg: string;
     gamingWelcomeMsg: string;
   };
+  britishify: boolean;
 }
 
 export interface Player {
