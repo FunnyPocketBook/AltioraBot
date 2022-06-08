@@ -2,7 +2,7 @@ FROM node:14
 WORKDIR /usr/src/app
 COPY package.json ./
 RUN apt update
-RUN apt upgrade
+RUN apt upgrade -y
 RUN npm install\
   && npm install typescript -g
 ADD . /usr/src/app 
