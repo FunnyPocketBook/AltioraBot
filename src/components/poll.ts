@@ -62,8 +62,8 @@ export async function autoVote(message: Message): Promise<void> {
 }
 
 export async function autoPoll(message: Message): Promise<void> {
-  await message.react(Const.EMOJIS.AGREE);
-  await message.react(Const.EMOJIS.DISAGREE);
+  await message.react(Const.EMOJIS.UPVOTE);
+  await message.react(Const.EMOJIS.DOWNVOTE);
   message.react(Const.EMOJIS.QUESTIONMARK);
 }
 
