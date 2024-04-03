@@ -4,6 +4,10 @@ DockerHub: https://hub.docker.com/r/funnypocketbook/altiora_bot
 
 There is currently no error checking so stuff might break. If you encounter a bug, please contact operations staff or me directly.
 
+## Installation
+Easiest way is to use Docker. Make sure that there is a directory called `appdata` and copy the file from [appdata/config-template.json](https://github.com/FunnyPocketBook/AltioraBot/blob/master/appdata/config-template.json) in there and name the file `config.json`. Then change the bot token as well.
+Once that's done, run the bot with `docker compose up -d` 
+
 ## Bot
 
 ### Commands
