@@ -1,0 +1,9 @@
+---
+services:
+  altiora-bot:
+    container_name: altiora-bot
+    image: funnypocketbook/altiora_bot
+    volumes:
+      - /home/yingkai/git/AltioraBot/appdata:/usr/src/app/appdata
+    restart: unless-stopped
+    user: ${UID-99}:${GID-100}
