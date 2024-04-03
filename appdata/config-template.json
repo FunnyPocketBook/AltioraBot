@@ -1,21 +1,21 @@
 {
   "botToken": "token",
   "options": {
-    "introductionChannelId": "id",
-    "communityRoleId": "id",
-    "minIntroWords": 5,
+    "introductionChannelId": "709150687451152455",
+    "communityRoleId": "709133671256424459",
+    "minIntroWords": "5",
     "noReactionText": "No one reacted :(",
     "tieText": "The voting has been closed and there was a tie between",
     "majorityText": "The voting has been closed, the majority voted for",
-    "tempVCIdleTime": 60,
-    "tempVCCategoryId": "id",
+    "tempVCIdleTime": "60",
+    "tempVCCategoryId": "709143758318338058",
     "tryoutsWelcomeMsg": "Hi {member}, welcome to tryouts in {teamName}! Please write your role/rank for everyone to see and please keep an eye on this channel to know scrim times etc. :)",
-    "tryoutsValorantWelcomeMsg": "Hi {member}, welcome to tryouts for team {teamName}! Please write your act rank at present, your peak rank as well as your current preferred agents, and keep an eye on this channel for information on scrim times and such. :)",
-    "altioraWelcomeMsg": "Hi {member}, welcome to Altiora! Reminder to look at {altioraRoleMenu} to get some NEW FRESH EXCLUSIVE roles! :)",
-    "communityWelcomeMsg": "Hi {member}, welcome to Altiora! Reminder to look at {roleMenu} to get some roles! :)",
-    "minecraftWelcomeMsg": "Hi {member}, welcome to the Minecraft channel! Please check the pinned message for the server details and ask to be whitelisted! :)",
+    "altioraWelcomeMsg": "Welcome to Altiora, {member}! You now have some extra channels to chat in and have access to member-dens. Don't forget to check <#709181045496348722> for the additional roles required. Nice to see you! <:Pan_AltioraLove:922966321434607636>",
+    "communityWelcomeMsg": "Hi {member}, welcome to Altiora! Please look at {roleMenu} to get some roles and write a short introduction in <#709150687451152455> to get the community role! :)",
+    "minecraftWelcomeMsg": "Hi {member}, welcome to the Minecraft channel! Please check the pinned message for details of our whitelist-only server. Connect to the server - you'll be kicked automatically, then you can ping FunnyPocketBook or firinn to have your join request approved.",
     "osuWelcomeMsg": "Hi {member}, welcome to the osu! channel! Feel free to post your osu! profile or maps! :)",
     "animalCrossingWelcomeMsg": "Hi {member}, welcome to the Animal Crossing channel! Feel free to leave your island code! :)",
-    "gamingWelcomeMsg": "Hi {member}, welcome to {channelName}! You can ping LFG gaming in this channel to only ping those who also have the {channelName} role! :)"
+    "gamingWelcomeMsg": "Hi {member}, welcome to the {channelName} channel! If you wanna play {channelName} with people you can ping LFG gaming within this channel! :)",
+    "tryoutsValorantWelcomeMsg": "Hi {member}, welcome to tryouts for team {teamName}! Please write your act rank at present, your peak rank as well as your current preferred agents, and keep an eye on this channel for information on scrim times and such. :)"
   }
 }
